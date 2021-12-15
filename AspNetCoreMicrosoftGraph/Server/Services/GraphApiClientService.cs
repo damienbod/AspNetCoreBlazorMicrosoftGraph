@@ -21,16 +21,16 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
                 .GetAsync();
         }
 
-        public async Task<User> GetUserMailboxSettings(string email)
+        public async Task<MailboxSettings> GetUserMailboxSettings(string email)
         {
             var upn = await GetUserIdAsync(email);
 
-            var mailbox = await _graphServiceClient.Users[upn]
+            var user = await _graphServiceClient.Users[upn]
                 .Request()
                 .Select("MailboxSettings")
                 .GetAsync();
 
-            return mailbox;
+            return user.MailboxSettings;
         }
         
 

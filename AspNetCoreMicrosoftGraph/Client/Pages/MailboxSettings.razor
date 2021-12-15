@@ -1,8 +1,8 @@
-﻿@page "/graphapicall"
+﻿@page "/mailboxsettings"
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
 
-<h1>Data from Graph API</h1>
+<h1>Mailbox Settings</h1>
 
 @if (apiData == null)
 {
@@ -36,7 +36,7 @@ else
 
         Http.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
 
-        apiData = await Http.GetFromJsonAsync<string[]>("api/GraphApiCalls");
+        apiData = await Http.GetFromJsonAsync<string[]>("api/GraphApiCalls/MailboxSettings");
     }
 
 }

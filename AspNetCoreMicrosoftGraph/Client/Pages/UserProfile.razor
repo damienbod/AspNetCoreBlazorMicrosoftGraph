@@ -1,8 +1,8 @@
-﻿@page "/directapi"
+﻿@page "/userprofile"
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
 
-<h1>Data from Direct API</h1>
+<h1>User Profile</h1>
 
 @if (apiData == null)
 {
@@ -36,7 +36,7 @@ else
 
         Http.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
 
-        apiData = await Http.GetFromJsonAsync<string[]>("api/DirectApi");
+        apiData = await Http.GetFromJsonAsync<string[]>("api/GraphApiCalls/UserProfile");
     }
 
 }

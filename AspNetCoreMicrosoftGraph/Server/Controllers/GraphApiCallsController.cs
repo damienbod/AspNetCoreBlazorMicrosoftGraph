@@ -22,12 +22,20 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
             _graphApiClientService = graphApiClientService;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<string>> Get()
+        [HttpGet("UserProfile")]
+        public async Task<IEnumerable<string>> UserProfile()
         {
             var userData = await _graphApiClientService.GetGraphApiUser(User.Identity.Name);
             return new List<string> { $"DisplayName: {userData.DisplayName}",
-                $"GivenName: {userData.GivenName}", $"AboutMe: {userData.AboutMe}" };
+                $"GivenName: {userData.GivenName}", $"Preferred Language: {userData.PreferredLanguage}" };
+        }
+
+        [HttpGet("MailboxSettings")]
+        public async Task<IEnumerable<string>> MailboxSettings()
+        {
+            var mailboxSettings = await _graphApiClientService.GetUserMailboxSettings(User.Identity.Name);
+            return new List<string> { $"AutomaticRepliesSetting Status: {mailboxSettings.AutomaticRepliesSetting.Status}",
+                $"TimeZone: {mailboxSettings.TimeZone}", $"Language: {mailboxSettings.Language.DisplayName}" };
         }
     }
 }
