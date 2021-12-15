@@ -37,5 +37,15 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
             return new List<string> { $"AutomaticRepliesSetting Status: {mailboxSettings.AutomaticRepliesSetting.Status}",
                 $"TimeZone: {mailboxSettings.TimeZone}", $"Language: {mailboxSettings.Language.DisplayName}" };
         }
+
+        [HttpGet("TeamsPresence")]
+        public async Task<IEnumerable<string>> Presence()
+        {
+            var userPresence = await _graphApiClientService.GetPresenceforEmail(User.Identity.Name);
+            return new List<string> { $"User Email: {User.Identity.Name}",
+                $"Availability: {userPresence[0].Availability}" };
+        }
+
+        
     }
 }
