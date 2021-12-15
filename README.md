@@ -35,3 +35,5 @@ The Azure App registration requires the Graph API delegated **User.Read.All** **
 ```
 
 # Links
+
+https://blazorise.com/
