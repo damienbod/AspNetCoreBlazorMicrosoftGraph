@@ -1,7 +1,4 @@
 ﻿using Microsoft.Graph;
-using Microsoft.Identity.Web;
-using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace AspNetCoreMicrosoftGraph.Server.Services
@@ -15,41 +12,38 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
             _graphServiceClient = graphServiceClient;
         }
 
-        public async Task<User> GetGraphApiUser()
+        public async Task<User> GetGraphApiUser(string email)
         {
-            return await _graphServiceClient
-                .Me
+            var upn = await GetUserIdAsync(email);
+
+            return await _graphServiceClient.Users[upn]
                 .Request()
-                .WithScopes("User.ReadBasic.All", "user.read")
-                .GetAsync()
-                ;
+                .GetAsync();
         }
 
-        public async Task<string> GetGraphApiProfilePhoto()
+        public async Task<User> GetUserMailboxSettings(string email)
         {
-            try
-            {
-                var photo = string.Empty;
-                // Get user photo
-                using (var photoStream = await _graphServiceClient
-                    .Me
-                    .Photo
-                    .Content
-                    .Request()
-                    .WithScopes("User.ReadBasic.All", "user.read")
-                    .GetAsync()
-                    )
-                {
-                    byte[] photoByte = ((MemoryStream)photoStream).ToArray();
-                    photo = Convert.ToBase64String(photoByte);
-                }
+            var upn = await GetUserIdAsync(email);
 
-                return photo;
-            }
-            catch
-            {
-                return string.Empty;
-            }
+            var mailbox = await _graphServiceClient.Users[upn]
+                .Request()
+                .Select("MailboxSettings")
+                .GetAsync();
+
+            return mailbox;
+        }
+        
+
+        private async Task<string> GetUserIdAsync(string email)
+        {
+            var filter = $"startswith(userPrincipalName,'{email}')";
+
+            var users = await _graphServiceClient.Users
+                .Request()
+                .Filter(filter)
+                .GetAsync();
+
+            return users.CurrentPage[0].Id;
         }
     }
 }
