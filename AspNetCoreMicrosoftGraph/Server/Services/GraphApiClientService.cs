@@ -47,6 +47,24 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
             return users.CurrentPage[0].Id;
         }
 
+        public async Task<IUserCalendarViewCollectionPage> GetCalanderForUser(string email, string from, string to)
+        {
+            var upn = await GetUserIdAsync(email);
+
+            var queryOptions = new List<QueryOption>()
+            {
+                new QueryOption("startDateTime", from),
+                new QueryOption("endDateTime", to)
+            };
+
+            var calendarView = await _graphServiceClient.Users[upn].CalendarView
+                .Request(queryOptions)
+                .Select("start,end,subject,location,sensitivity, showAs, isAllDay")
+                .GetAsync();
+
+            return calendarView;
+        }
+
         public async Task<List<Presence>> GetPresenceforEmail(string email)
         {
             var cloudCommunicationPages = await GetPresenceAsync(email);
