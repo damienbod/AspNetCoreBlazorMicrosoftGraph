@@ -47,7 +47,38 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
             return users.CurrentPage[0].Id;
         }
 
-        public async Task<IUserCalendarViewCollectionPage> GetCalanderForUser(string email, string from, string to)
+        public async Task<List<FilteredEvent>> GetCalanderForUser(string email, string from, string to)
+        {
+
+            var userCalendarViewCollectionPages = await GetCalanderForUserUsingGraph(email, from, to);
+
+            var allEvents = new List<FilteredEvent>();
+
+            while (userCalendarViewCollectionPages != null && userCalendarViewCollectionPages.Count > 0)
+            {
+                foreach (var calenderEvent in userCalendarViewCollectionPages)
+                {
+                    var filteredEvent = new FilteredEvent
+                    {
+                        ShowAs = calenderEvent.ShowAs,
+                        Sensitivity = calenderEvent.Sensitivity,
+                        Start = calenderEvent.Start,
+                        End = calenderEvent.End,
+                        Subject = calenderEvent.Subject,
+                        IsAllDay = calenderEvent.IsAllDay,
+                        Location = calenderEvent.Location
+                    };
+                    allEvents.Add(filteredEvent);
+                }
+
+                if (userCalendarViewCollectionPages.NextPageRequest == null)
+                    break;
+            }
+
+            return allEvents;
+        }
+
+        private async Task<IUserCalendarViewCollectionPage> GetCalanderForUserUsingGraph(string email, string from, string to)
         {
             var upn = await GetUserIdAsync(email);
 
