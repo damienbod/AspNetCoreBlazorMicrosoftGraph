@@ -1,4 +1,10 @@
 ﻿using AspNetCoreMicrosoftGraph.Client.Services;
+using Blazored.SessionStorage;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
+using Blazorise.Icons.Material;
+using Blazorise.Material;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +26,13 @@ namespace AspNetCoreMicrosoftGraph.Client
             builder.Services.TryAddSingleton<AuthenticationStateProvider, HostAuthenticationStateProvider>();
             builder.Services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
             builder.Services.AddTransient<AuthorizedHandler>();
+
+
+            builder.Services
+                .AddBlazorise(options => { options.ChangeTextOnKeyPress = true; })
+                .AddMaterialProviders()
+                .AddMaterialIcons()
+              .AddFontAwesomeIcons();
 
             builder.RootComponents.Add<App>("#app");
 

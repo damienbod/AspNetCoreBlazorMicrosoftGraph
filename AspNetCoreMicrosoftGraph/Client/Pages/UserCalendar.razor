@@ -4,31 +4,30 @@
 
 <h1>User Calendar</h1>
 
-@if (apiData == null)
+@if (filteredEvents == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Data</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var data in apiData)
-            {
-                <tr>
-                    <td>@data</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <DataGrid TItem="FilteredEvent"
+          Data="@filteredEvents"
+          @bind-SelectedRow="@selectedFilteredEvent"
+          Responsive>
+    <DataGridCommandColumn TItem="FilteredEvent" />
+    <DataGridColumn TItem="FilteredEvent" Field="@nameof(FilteredEvent.Subject)" Caption="Subject" Sortable="true" />
+    <DataGridColumn TItem="FilteredEvent" Field="@nameof(FilteredEvent.Start.DateTime)" Caption="Start" Editable="false" />
+    <DataGridColumn TItem="FilteredEvent" Field="@nameof(FilteredEvent.End.DateTime)" Caption="End" Editable="false" />
+    <DataGridColumn TItem="FilteredEvent" Field="@nameof(FilteredEvent.Location.DisplayName)" Caption="Location" Editable="false" />
+    <DataGridColumn TItem="FilteredEvent" Field="@nameof(FilteredEvent.Sensitivity)" Caption="Sensitivity" Editable="false"/>
+@*    <DataGridColumn TItem="FilteredEvent" Field="@nameof(FilteredEvent.IsAllDay)" Caption="IsAllDay" Editable="false"/>
+    <DataGridColumn TItem="FilteredEvent" Field="@nameof(FilteredEvent.ShowAs)" Caption="ShowAs" Editable="false"/>*@
+</DataGrid>
 }
 
 @code {
-    private string[] apiData;
+    private List<FilteredEvent> filteredEvents;
+     private FilteredEvent selectedFilteredEvent;
 
     protected override async Task OnInitializedAsync()
     {
@@ -36,7 +35,7 @@ else
 
         Http.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
 
-        apiData = await Http.GetFromJsonAsync<string[]>("api/GraphApiCalls/UserCalendar");
+        filteredEvents = await Http.GetFromJsonAsync<List<FilteredEvent>>("api/GraphApiCalls/UserCalendar");
     }
 
 }
