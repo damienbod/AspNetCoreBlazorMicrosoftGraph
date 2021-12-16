@@ -46,6 +46,16 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
                 $"Availability: {userPresence[0].Availability}" };
         }
 
-        
+        [HttpGet("UserCalendar")]
+        public async Task<IEnumerable<string>> UserCalendar()
+        {
+            var userCalendar = await _graphApiClientService.GetCalanderForUser(
+                User.Identity.Name,
+                "2021-12-13T12:00:00-01:00",
+                "2023-12-13T12:00:00-01:00");
+
+            return new List<string> { $"User Email: {User.Identity.Name}",
+                $"Sensitivity 0: {userCalendar[0].Sensitivity}" };
+        }
     }
 }
