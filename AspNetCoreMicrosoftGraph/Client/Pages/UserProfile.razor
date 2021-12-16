@@ -2,7 +2,7 @@
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
 
-<h1>User Profile</h1>
+<h4>User Profile</h4>
 
 @if (apiData == null)
 {
@@ -11,11 +11,6 @@
 else
 {
     <table class="table">
-        <thead>
-            <tr>
-                <th>Data</th>
-            </tr>
-        </thead>
         <tbody>
             @foreach (var data in apiData)
             {

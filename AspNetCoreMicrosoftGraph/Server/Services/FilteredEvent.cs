@@ -1,6 +1,6 @@
 ﻿using Microsoft.Graph;
 
-namespace AspNetCoreMicrosoftGraph
+namespace AspNetCoreMicrosoftGraph.Server.Services
 {
     public class FilteredEvent
     {

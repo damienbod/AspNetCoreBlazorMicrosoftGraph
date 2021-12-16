@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreMicrosoftGraph.Server.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -47,14 +48,22 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
         }
 
         [HttpGet("UserCalendar")]
-        public async Task<List<FilteredEvent>> UserCalendar()
+        public async Task<IEnumerable<FilteredEventDto>> UserCalendar()
         {
             var userCalendar = await _graphApiClientService.GetCalanderForUser(
                 User.Identity.Name,
                 "2021-12-13T12:00:00-01:00",
                 "2023-12-13T12:00:00-01:00");
 
-            return userCalendar;
+            return userCalendar.Select(l => new FilteredEventDto
+            {
+                IsAllDay = l.IsAllDay.GetValueOrDefault(),
+                Sensitivity = l.Sensitivity.ToString(),
+                Start = l.Start?.DateTime,
+                End = l.End?.DateTime,
+                ShowAs = l.ShowAs.Value.ToString(),
+                Subject=l.Subject
+            });
         }
     }
 }
