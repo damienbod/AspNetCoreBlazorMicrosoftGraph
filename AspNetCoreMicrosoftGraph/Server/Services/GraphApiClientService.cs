@@ -44,7 +44,8 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
 
         private async Task<string> GetUserIdAsync(string email)
         {
-            var filter = $"startswith(userPrincipalName,'{email}')";
+            var filter = $"userPrincipalName eq '{email}'";
+            //var filter = $"startswith(userPrincipalName,'{email}')";
 
             var users = await _graphServiceClient.Users
                 .Request()
