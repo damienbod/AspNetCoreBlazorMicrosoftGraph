@@ -15,7 +15,6 @@
         </TextEdit>
     </Validation>
 
-
     <Field Horizontal="true">
         <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is2.OnDesktop">From</FieldLabel>
         <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
@@ -65,7 +64,7 @@ else
     };
 
     private FilteredEventDto selectedFilteredEvent;
-    private string? noDataResult { get; set; } = "no data";
+    private string noDataResult { get; set; } = "no data";
     bool saveDisabled = true;
 
     Task OnStatusChanged( ValidationsStatusChangedEventArgs eventArgs )

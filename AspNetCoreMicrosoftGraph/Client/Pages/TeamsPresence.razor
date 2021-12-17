@@ -19,8 +19,6 @@
     <Button Color="Color.Primary" Disabled="@saveDisabled" PreventDefaultOnSubmit="true" Clicked="@Submit">Get presence for user</Button>
 </Validations>
 
-
-
  <br /><br />
 
 @if (presenceData == null)
@@ -45,7 +43,7 @@ else
 @code {
     private List<PresenceData> presenceData;
     private EmailPresenceModel emailPresence { get; set; } = new EmailPresenceModel();
-    private string? noDataResult { get; set; } = "no data";
+    private string noDataResult { get; set; } = "no data";
     bool saveDisabled = true;
 
     Task OnStatusChanged( ValidationsStatusChangedEventArgs eventArgs )

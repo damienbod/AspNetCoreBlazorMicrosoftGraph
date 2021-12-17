@@ -45,7 +45,7 @@ else
 @code {
     private List<MailboxSettingsData> mailboxSettingsData;
     private MailboxSettingsModel mailboxSettings { get; set; } = new MailboxSettingsModel();
-    private string? noDataResult { get; set; } = "no data";
+    private string noDataResult { get; set; } = "no data";
     bool saveDisabled = true;
 
     Task OnStatusChanged( ValidationsStatusChangedEventArgs eventArgs )
