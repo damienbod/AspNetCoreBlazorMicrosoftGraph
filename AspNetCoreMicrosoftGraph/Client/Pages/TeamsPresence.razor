@@ -4,8 +4,8 @@
 
 <h4>Teams Presence</h4>
 
-<EditForm Model="@emailPresence">
-    <Validations>
+
+    <Validations StatusChanged="@OnStatusChanged">
         <Validation Validator="@ValidateEmail"  >
             <TextEdit Placeholder="Enter email" @bind-Text="emailPresence.EmailPresence" >
                 <Feedback>
@@ -16,9 +16,9 @@
             </TextEdit>
         </Validation>
         <br />
-        <Button Color="Color.Primary" Clicked="@Submit">Get presence for user</Button>
+        <Button Color="Color.Primary" Disabled="@saveDisabled" PreventDefaultOnSubmit="true" Clicked="@Submit">Get presence for user</Button>
     </Validations>
-</EditForm>
+
 
 
  <br /><br />
@@ -46,6 +46,14 @@ else
     private List<PresenceData> presenceData;
     private EmailPresenceModel emailPresence { get; set; } = new EmailPresenceModel();
     private string? noDataResult { get; set; } = "no data";
+    bool saveDisabled = true;
+
+    Task OnStatusChanged( ValidationsStatusChangedEventArgs eventArgs )
+    {
+        saveDisabled = eventArgs.Status != ValidationStatus.Success;
+
+        return Task.CompletedTask;
+    }
 
     void ValidateEmail( ValidatorEventArgs e )
     {

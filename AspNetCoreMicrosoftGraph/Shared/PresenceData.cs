@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AspNetCoreMicrosoftGraph
 {
@@ -10,6 +11,7 @@ namespace AspNetCoreMicrosoftGraph
 
     public class EmailPresenceModel
     {
+        [Required]
         public string EmailPresence { get; set; }
     }
 }
