@@ -48,17 +48,17 @@
 else
 {
     <DataGrid TItem="FilteredEventDto"
-          Data="@filteredEvents" Bordered="true"
-          @bind-SelectedRow="@selectedFilteredEvent"
-          Responsive>
-    <DataGridCommandColumn TItem="FilteredEventDto" />
-    <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.Subject)" Caption="Subject" Sortable="true" />
-    <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.Start)" Caption="Start" Editable="false" />
-    <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.End)" Caption="End" Editable="false" />
-    <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.Sensitivity)" Caption="Sensitivity" Editable="false"/>
-    <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.IsAllDay)" Caption="IsAllDay" Editable="false"/>
-    <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.ShowAs)" Caption="ShowAs" Editable="false"/>
-</DataGrid>
+              Data="@filteredEvents" Bordered="true"
+              @bind-SelectedRow="@selectedFilteredEvent"
+              Responsive>
+        <DataGridCommandColumn TItem="FilteredEventDto" />
+        <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.Subject)" Caption="Subject" Sortable="true" />
+        <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.Start)" Caption="Start" Editable="false" />
+        <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.End)" Caption="End" Editable="false" />
+        <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.Sensitivity)" Caption="Sensitivity" Editable="false"/>
+        <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.IsAllDay)" Caption="IsAllDay" Editable="false"/>
+        <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.ShowAs)" Caption="ShowAs" Editable="false"/>
+    </DataGrid>
 }
 
 @code {
