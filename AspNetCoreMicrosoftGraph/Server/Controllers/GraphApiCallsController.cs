@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreMicrosoftGraph.Server.Services;
@@ -45,6 +46,17 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
             var userPresence = await _graphApiClientService.GetPresenceforEmail(User.Identity.Name);
             return new List<string> { $"User Email: {User.Identity.Name}",
                 $"Availability: {userPresence[0].Availability}" };
+        }
+
+        [HttpPost("TeamsPresenceData")]
+        public async Task<IActionResult> PresencePost([FromBody] string email)
+        {
+            var userPresence = await _graphApiClientService.GetPresenceforEmail(email);
+
+            var result = new List<string> { $"User Email: {User.Identity.Name}",
+                $"Availability: {userPresence[0].Availability}" };
+
+            return Ok(result);
         }
 
         [HttpGet("UserCalendar")]

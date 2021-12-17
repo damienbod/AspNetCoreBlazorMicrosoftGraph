@@ -4,15 +4,29 @@
 
 <h4>Teams Presence</h4>
 
-@if (apiData == null)
+<Validations>
+    <Validation Validator="@ValidateEmail">
+        <TextEdit Placeholder="Enter email">
+            <Feedback>
+                <ValidationNone>Please enter the email.</ValidationNone>
+                <ValidationSuccess>Email is good.</ValidationSuccess>
+                <ValidationError>Enter valid email!</ValidationError>
+            </Feedback>
+        </TextEdit>
+    </Validation>
+    <Button Color="Color.Primary" Clicked="@Submit">Submit</Button>
+</Validations>
+
+
+@if (presenceData == null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>no data</em></p>
 }
 else
 {
     <table class="table">
         <tbody>
-            @foreach (var data in apiData)
+            @foreach (var data in presenceData)
             {
                 <tr>
                     <td>@data</td>
@@ -23,15 +37,31 @@ else
 }
 
 @code {
-    private string[] apiData;
+    private string[] presenceData;
 
-    protected override async Task OnInitializedAsync()
+    void ValidateEmail( ValidatorEventArgs e )
+    {
+        var email = Convert.ToString( e.Value );
+
+        e.Status = string.IsNullOrEmpty( email ) ? ValidationStatus.None :
+            email.Contains( "@" ) ? ValidationStatus.Success : ValidationStatus.Error;
+    }
+
+    async Task Submit()
+    {
+        await PostData("damienbod@damienbodsharepoint.onmicrosoft.com");
+    }
+
+    private async Task PostData(string email)
     {
         var token = await JSRuntime.InvokeAsync<string>("getAntiForgeryToken");
-
         Http.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
+        var response = await Http.PostAsJsonAsync<string>("api/GraphApiCalls/TeamsPresenceData", email);
+        presenceData = await response.Content.ReadFromJsonAsync<string[]>();
 
-        apiData = await Http.GetFromJsonAsync<string[]>("api/GraphApiCalls/TeamsPresence");
+        //var token = await JSRuntime.InvokeAsync<string>("getAntiForgeryToken");
+        //Http.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
+        //presenceData = await Http.GetFromJsonAsync<string[]>("api/GraphApiCalls/TeamsPresence");
     }
 
 }
