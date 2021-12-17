@@ -44,14 +44,23 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
         [HttpPost("TeamsPresence")]
         public async Task<IActionResult> PresencePost([FromBody] string email)
         {
-            var userPresence = await _graphApiClientService.GetPresenceforEmail(email);
+            if (string.IsNullOrEmpty(email))
+                return BadRequest("No email");
+            try
+            {
+                var userPresence = await _graphApiClientService.GetPresenceforEmail(email);
 
-            var result = new List<PresenceData> { 
+                var result = new List<PresenceData> {
                 new PresenceData { Name = "User Email", Data = User.Identity.Name },
                 new PresenceData { Name = "Availability", Data = userPresence[0].Availability }
             };
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("UserCalendar")]

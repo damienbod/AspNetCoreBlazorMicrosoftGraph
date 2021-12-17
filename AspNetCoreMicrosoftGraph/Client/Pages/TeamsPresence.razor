@@ -4,19 +4,22 @@
 
 <h4>Teams Presence</h4>
 
-<Validations>
-    <Validation Validator="@ValidateEmail">
-        <TextEdit Placeholder="Enter email">
-            <Feedback>
-                <ValidationNone>Please enter the email.</ValidationNone>
-                <ValidationSuccess>Email is good.</ValidationSuccess>
-                <ValidationError>Enter valid email!</ValidationError>
-            </Feedback>
-        </TextEdit>
-    </Validation>
-    <br />
-    <Button Color="Color.Primary" Clicked="@Submit">Get presence for user</Button>
-</Validations>
+<EditForm Model="@emailPresence">
+    <Validations>
+        <Validation Validator="@ValidateEmail"  >
+            <TextEdit Placeholder="Enter email" @bind-Text="emailPresence.EmailPresence" >
+                <Feedback>
+                    <ValidationNone>Please enter the email.</ValidationNone>
+                    <ValidationSuccess>Email is good.</ValidationSuccess>
+                    <ValidationError>Enter valid email!</ValidationError>
+                </Feedback>
+            </TextEdit>
+        </Validation>
+        <br />
+        <Button Color="Color.Primary" Clicked="@Submit">Get presence for user</Button>
+    </Validations>
+</EditForm>
+
 
  <br /><br />
 
@@ -28,11 +31,11 @@ else
 {
     <table class="table">
         <tbody>
-            @foreach (var presenceData in presenceData)
+            @foreach (var presence in presenceData)
             {
                 <tr>
-                    <td>@presenceData.Name</td>
-                    <td>@presenceData.Data</td>
+                    <td>@presence.Name</td>
+                    <td>@presence.Data</td>
                 </tr>
             }
         </tbody>
@@ -41,18 +44,19 @@ else
 
 @code {
     private List<PresenceData> presenceData;
+    private EmailPresenceModel emailPresence { get; set; } = new EmailPresenceModel();
 
     void ValidateEmail( ValidatorEventArgs e )
     {
         var email = Convert.ToString( e.Value );
 
-        e.Status = string.IsNullOrEmpty( email ) ? ValidationStatus.None :
+       e.Status = string.IsNullOrEmpty( email ) ? ValidationStatus.None :
             email.Contains( "@" ) ? ValidationStatus.Success : ValidationStatus.Error;
     }
 
     async Task Submit()
     {
-        await PostData("damienbod@damienbodsharepoint.onmicrosoft.com");
+        await PostData(emailPresence.EmailPresence);
     }
 
     private async Task PostData(string email)
@@ -60,6 +64,9 @@ else
         var token = await JSRuntime.InvokeAsync<string>("getAntiForgeryToken");
         Http.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
         var response = await Http.PostAsJsonAsync<string>("api/GraphApiCalls/TeamsPresence", email);
-        presenceData = await response.Content.ReadFromJsonAsync<List<PresenceData>>();
+        if(response.IsSuccessStatusCode)
+        {
+            presenceData = await response.Content.ReadFromJsonAsync<List<PresenceData>>();
+        }
     }
 }
