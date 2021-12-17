@@ -16,6 +16,8 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
         public async Task<User> GetGraphApiUser(string email)
         {
             var upn = await GetUserIdAsync(email);
+            if (!string.IsNullOrEmpty(upn))
+                return null;
 
             return await _graphServiceClient.Users[upn]
                 .Request()
@@ -25,6 +27,11 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
         public async Task<MailboxSettings> GetUserMailboxSettings(string email)
         {
             var upn = await GetUserIdAsync(email);
+            if (!string.IsNullOrEmpty(upn))
+                return null;
+
+            if (!string.IsNullOrEmpty(upn))
+                return null;
 
             var user = await _graphServiceClient.Users[upn]
                 .Request()
@@ -44,6 +51,10 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
                 .Filter(filter)
                 .GetAsync();
 
+            if(users.CurrentPage.Count == 0)
+            {
+                return string.Empty;
+            }
             return users.CurrentPage[0].Id;
         }
 
@@ -81,6 +92,8 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
         private async Task<IUserCalendarViewCollectionPage> GetCalanderForUserUsingGraph(string email, string from, string to)
         {
             var upn = await GetUserIdAsync(email);
+            if (!string.IsNullOrEmpty(upn))
+                return null;
 
             var queryOptions = new List<QueryOption>()
             {
@@ -119,6 +132,9 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
         private async Task<ICloudCommunicationsGetPresencesByUserIdCollectionPage> GetPresenceAsync(string email)
         {
             var upn = await GetUserIdAsync(email);
+            //if (string.IsNullOrEmpty(upn))
+            //    return null;
+
             var ids = new List<string>()
             {
                 upn

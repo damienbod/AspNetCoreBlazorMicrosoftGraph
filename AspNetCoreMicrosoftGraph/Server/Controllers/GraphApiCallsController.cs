@@ -50,8 +50,13 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
             {
                 var userPresence = await _graphApiClientService.GetPresenceforEmail(email);
 
+                if (userPresence.Count == 0)
+                {
+                    return NotFound(email);
+                }
+
                 var result = new List<PresenceData> {
-                new PresenceData { Name = "User Email", Data = User.Identity.Name },
+                new PresenceData { Name = "User Email", Data = email },
                 new PresenceData { Name = "Availability", Data = userPresence[0].Availability }
             };
 
