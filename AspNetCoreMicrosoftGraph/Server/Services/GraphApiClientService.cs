@@ -130,8 +130,6 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
         private async Task<ICloudCommunicationsGetPresencesByUserIdCollectionPage> GetPresenceAsync(string email)
         {
             var upn = await GetUserIdAsync(email);
-            //if (string.IsNullOrEmpty(upn))
-            //    return null;
 
             var ids = new List<string>()
             {

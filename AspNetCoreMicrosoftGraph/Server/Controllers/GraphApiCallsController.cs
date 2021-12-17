@@ -88,8 +88,8 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
             }
         }
 
-        [HttpGet("UserCalendar")]
-        public async Task<IEnumerable<FilteredEventDto>> UserCalendar()
+        [HttpPost("UserCalendar")]
+        public async Task<IEnumerable<FilteredEventDto>> UserCalendar(UserCalendarDataModel userCalendarDataModel)
         {
             var userCalendar = await _graphApiClientService.GetCalanderForUser(
                 User.Identity.Name,

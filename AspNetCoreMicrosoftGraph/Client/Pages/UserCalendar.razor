@@ -1,8 +1,24 @@
 ﻿@page "/usercalendar"
-@inject HttpClient Http
+@inject IHttpClientFactory HttpClientFactory
 @inject IJSRuntime JSRuntime
 
 <h4>Calendar Events</h4>
+
+<Validations StatusChanged="@OnStatusChanged">
+    <Validation Validator="@ValidateEmail"  >
+        <TextEdit Placeholder="Enter email" @bind-Text="userCalendarDataModel.Email" >
+            <Feedback>
+                <ValidationNone>Please enter the email.</ValidationNone>
+                <ValidationSuccess>Email is good.</ValidationSuccess>
+                <ValidationError>Enter valid email!</ValidationError>
+            </Feedback>
+        </TextEdit>
+    </Validation>
+    <br />
+    <Button Color="Color.Primary" Disabled="@saveDisabled" PreventDefaultOnSubmit="true" Clicked="@Submit">Get calendar events for user</Button>
+</Validations>
+
+ <br /><br />
 
 @if (filteredEvents == null)
 {
@@ -26,15 +42,46 @@ else
 
 @code {
     private List<FilteredEventDto> filteredEvents;
-     private FilteredEventDto selectedFilteredEvent;
+    private UserCalendarDataModel userCalendarDataModel { get; set; } = new UserCalendarDataModel();
+    private FilteredEventDto selectedFilteredEvent;
+    private string? noDataResult { get; set; } = "no data";
+    bool saveDisabled = true;
 
-    protected override async Task OnInitializedAsync()
+    Task OnStatusChanged( ValidationsStatusChangedEventArgs eventArgs )
     {
-        var token = await JSRuntime.InvokeAsync<string>("getAntiForgeryToken");
+        saveDisabled = eventArgs.Status != ValidationStatus.Success;
 
-        Http.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
-
-        filteredEvents = await Http.GetFromJsonAsync<List<FilteredEventDto>>("api/GraphApiCalls/UserCalendar");
+        return Task.CompletedTask;
     }
 
+    void ValidateEmail( ValidatorEventArgs e )
+    {
+        var email = Convert.ToString( e.Value );
+
+        e.Status = string.IsNullOrEmpty( email ) ? ValidationStatus.None :
+             email.Contains( "@" ) ? ValidationStatus.Success : ValidationStatus.Error;
+    }
+
+    async Task Submit()
+    {
+        await PostData(userCalendarDataModel);
+    }
+
+    private async Task PostData(UserCalendarDataModel userCalendarDataModel)
+    {
+        var token = await JSRuntime.InvokeAsync<string>("getAntiForgeryToken");
+        var client = HttpClientFactory.CreateClient("default");
+        client.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
+        var response = await client.PostAsJsonAsync<string>("api/GraphApiCalls/UserCalendar", userCalendarDataModel);
+        if(response.IsSuccessStatusCode)
+        {
+            filteredEvents = await response.Content.ReadFromJsonAsync<List<FilteredEventDto>>();
+        }
+        else
+        {
+            var error = await response.Content.ReadAsStringAsync();
+            filteredEvents = null;
+            noDataResult = error;
+        }
+    }
 }
