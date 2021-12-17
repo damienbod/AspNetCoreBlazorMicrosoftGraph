@@ -32,12 +32,32 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
                 $"GivenName: {userData.GivenName}", $"Preferred Language: {userData.PreferredLanguage}" };
         }
 
-        [HttpGet("MailboxSettings")]
-        public async Task<IEnumerable<string>> MailboxSettings()
+        [HttpPost("MailboxSettings")]
+        public async Task<IActionResult> MailboxSettings([FromBody] string email)
         {
-            var mailboxSettings = await _graphApiClientService.GetUserMailboxSettings(User.Identity.Name);
-            return new List<string> { $"AutomaticRepliesSetting Status: {mailboxSettings.AutomaticRepliesSetting.Status}",
-                $"TimeZone: {mailboxSettings.TimeZone}", $"Language: {mailboxSettings.Language.DisplayName}" };
+            if (string.IsNullOrEmpty(email))
+                return BadRequest("No email");
+            try
+            {
+                var mailbox = await _graphApiClientService.GetUserMailboxSettings(email);
+
+                if(mailbox == null)
+                {
+                    return NotFound($"mailbox settings for {email} not found");
+                }
+                var result = new List<MailboxSettingsData> {
+                new MailboxSettingsData { Name = "User Email", Data = email },
+                new MailboxSettingsData { Name = "AutomaticRepliesSetting", Data = mailbox.AutomaticRepliesSetting.Status.ToString() },
+                new MailboxSettingsData { Name = "TimeZone", Data = mailbox.TimeZone },
+                new MailboxSettingsData { Name = "Language", Data = mailbox.Language.DisplayName }
+            };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 

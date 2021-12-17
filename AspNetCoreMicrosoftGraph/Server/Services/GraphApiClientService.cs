@@ -27,10 +27,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
         public async Task<MailboxSettings> GetUserMailboxSettings(string email)
         {
             var upn = await GetUserIdAsync(email);
-            if (!string.IsNullOrEmpty(upn))
-                return null;
-
-            if (!string.IsNullOrEmpty(upn))
+            if (string.IsNullOrEmpty(upn))
                 return null;
 
             var user = await _graphServiceClient.Users[upn]
@@ -93,7 +90,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
         private async Task<IUserCalendarViewCollectionPage> GetCalanderForUserUsingGraph(string email, string from, string to)
         {
             var upn = await GetUserIdAsync(email);
-            if (!string.IsNullOrEmpty(upn))
+            if (string.IsNullOrEmpty(upn))
                 return null;
 
             var queryOptions = new List<QueryOption>()

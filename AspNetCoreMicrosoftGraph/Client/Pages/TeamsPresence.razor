@@ -5,19 +5,19 @@
 <h4>Teams Presence</h4>
 
 
-    <Validations StatusChanged="@OnStatusChanged">
-        <Validation Validator="@ValidateEmail"  >
-            <TextEdit Placeholder="Enter email" @bind-Text="emailPresence.EmailPresence" >
-                <Feedback>
-                    <ValidationNone>Please enter the email.</ValidationNone>
-                    <ValidationSuccess>Email is good.</ValidationSuccess>
-                    <ValidationError>Enter valid email!</ValidationError>
-                </Feedback>
-            </TextEdit>
-        </Validation>
-        <br />
-        <Button Color="Color.Primary" Disabled="@saveDisabled" PreventDefaultOnSubmit="true" Clicked="@Submit">Get presence for user</Button>
-    </Validations>
+<Validations StatusChanged="@OnStatusChanged">
+    <Validation Validator="@ValidateEmail"  >
+        <TextEdit Placeholder="Enter email" @bind-Text="emailPresence.EmailPresence" >
+            <Feedback>
+                <ValidationNone>Please enter the email.</ValidationNone>
+                <ValidationSuccess>Email is good.</ValidationSuccess>
+                <ValidationError>Enter valid email!</ValidationError>
+            </Feedback>
+        </TextEdit>
+    </Validation>
+    <br />
+    <Button Color="Color.Primary" Disabled="@saveDisabled" PreventDefaultOnSubmit="true" Clicked="@Submit">Get presence for user</Button>
+</Validations>
 
 
 
