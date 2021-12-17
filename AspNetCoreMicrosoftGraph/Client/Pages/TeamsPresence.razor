@@ -14,9 +14,11 @@
             </Feedback>
         </TextEdit>
     </Validation>
-    <Button Color="Color.Primary" Clicked="@Submit">Submit</Button>
+    <br />
+    <Button Color="Color.Primary" Clicked="@Submit">Get presence for user</Button>
 </Validations>
 
+ <br /><br />
 
 @if (presenceData == null)
 {
@@ -26,10 +28,11 @@ else
 {
     <table class="table">
         <tbody>
-            @foreach (var data in presenceData)
+            @foreach (var presenceData in presenceData)
             {
                 <tr>
-                    <td>@data</td>
+                    <td>@presenceData.Name</td>
+                    <td>@presenceData.Data</td>
                 </tr>
             }
         </tbody>
@@ -37,7 +40,7 @@ else
 }
 
 @code {
-    private string[] presenceData;
+    private List<PresenceData> presenceData;
 
     void ValidateEmail( ValidatorEventArgs e )
     {
@@ -56,12 +59,7 @@ else
     {
         var token = await JSRuntime.InvokeAsync<string>("getAntiForgeryToken");
         Http.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
-        var response = await Http.PostAsJsonAsync<string>("api/GraphApiCalls/TeamsPresenceData", email);
-        presenceData = await response.Content.ReadFromJsonAsync<string[]>();
-
-        //var token = await JSRuntime.InvokeAsync<string>("getAntiForgeryToken");
-        //Http.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
-        //presenceData = await Http.GetFromJsonAsync<string[]>("api/GraphApiCalls/TeamsPresence");
+        var response = await Http.PostAsJsonAsync<string>("api/GraphApiCalls/TeamsPresence", email);
+        presenceData = await response.Content.ReadFromJsonAsync<List<PresenceData>>();
     }
-
 }

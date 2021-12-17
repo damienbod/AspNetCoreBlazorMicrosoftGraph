@@ -40,21 +40,16 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
                 $"TimeZone: {mailboxSettings.TimeZone}", $"Language: {mailboxSettings.Language.DisplayName}" };
         }
 
-        [HttpGet("TeamsPresence")]
-        public async Task<IEnumerable<string>> Presence()
-        {
-            var userPresence = await _graphApiClientService.GetPresenceforEmail(User.Identity.Name);
-            return new List<string> { $"User Email: {User.Identity.Name}",
-                $"Availability: {userPresence[0].Availability}" };
-        }
 
-        [HttpPost("TeamsPresenceData")]
+        [HttpPost("TeamsPresence")]
         public async Task<IActionResult> PresencePost([FromBody] string email)
         {
             var userPresence = await _graphApiClientService.GetPresenceforEmail(email);
 
-            var result = new List<string> { $"User Email: {User.Identity.Name}",
-                $"Availability: {userPresence[0].Availability}" };
+            var result = new List<PresenceData> { 
+                new PresenceData { Name = "User Email", Data = User.Identity.Name },
+                new PresenceData { Name = "Availability", Data = userPresence[0].Availability }
+            };
 
             return Ok(result);
         }
