@@ -1,5 +1,5 @@
 ﻿@page "/teamspresence"
-@inject HttpClient Http
+@inject IHttpClientFactory HttpClientFactory
 @inject IJSRuntime JSRuntime
 
 <h4>Teams Presence</h4>
@@ -63,8 +63,9 @@ else
     private async Task PostData(string email)
     {
         var token = await JSRuntime.InvokeAsync<string>("getAntiForgeryToken");
-        Http.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
-        var response = await Http.PostAsJsonAsync<string>("api/GraphApiCalls/TeamsPresence", email);
+        var client = HttpClientFactory.CreateClient("default");
+        client.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
+        var response = await client.PostAsJsonAsync<string>("api/GraphApiCalls/TeamsPresence", email);
         if(response.IsSuccessStatusCode)
         {
             presenceData = await response.Content.ReadFromJsonAsync<List<PresenceData>>();
