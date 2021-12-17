@@ -25,7 +25,7 @@
 
 @if (presenceData == null)
 {
-    <p><em>no data</em></p>
+    <p><em>@noDataResult</em></p>
 }
 else
 {
@@ -45,13 +45,14 @@ else
 @code {
     private List<PresenceData> presenceData;
     private EmailPresenceModel emailPresence { get; set; } = new EmailPresenceModel();
+    private string? noDataResult { get; set; } = "no data";
 
     void ValidateEmail( ValidatorEventArgs e )
     {
         var email = Convert.ToString( e.Value );
 
-       e.Status = string.IsNullOrEmpty( email ) ? ValidationStatus.None :
-            email.Contains( "@" ) ? ValidationStatus.Success : ValidationStatus.Error;
+        e.Status = string.IsNullOrEmpty( email ) ? ValidationStatus.None :
+             email.Contains( "@" ) ? ValidationStatus.Success : ValidationStatus.Error;
     }
 
     async Task Submit()
@@ -67,6 +68,12 @@ else
         if(response.IsSuccessStatusCode)
         {
             presenceData = await response.Content.ReadFromJsonAsync<List<PresenceData>>();
+        }
+        else
+        {
+            var error = await response.Content.ReadAsStringAsync();
+            presenceData = null;
+            noDataResult = error;
         }
     }
 }
