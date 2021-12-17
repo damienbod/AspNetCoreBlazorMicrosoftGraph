@@ -14,26 +14,21 @@
             </Feedback>
         </TextEdit>
     </Validation>
-    
-    <Validation Validator="@ValidateFromTo"  >
-        <TextEdit Placeholder="Enter From" @bind-Text="userCalendarDataModel.From" >
-            <Feedback>
-                <ValidationNone>Please enter the from date time.</ValidationNone>
-                <ValidationSuccess>From is good.</ValidationSuccess>
-                <ValidationError>Enter valid from date time! 2021-12-13T12:00:00-01:00</ValidationError>
-            </Feedback>
-        </TextEdit>
-    </Validation>
 
-    <Validation Validator="@ValidateFromTo"  >
-        <TextEdit Placeholder="Enter To" @bind-Text="userCalendarDataModel.To" >
-            <Feedback>
-                <ValidationNone>Please enter the to date time.</ValidationNone>
-                <ValidationSuccess>To is good.</ValidationSuccess>
-                <ValidationError>Enter valid to date time 2021-12-13T12:00:00-01:00!</ValidationError>
-            </Feedback>
-        </TextEdit>
-    </Validation>
+
+    <Field Horizontal="true">
+        <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is2.OnDesktop">From</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
+            <DateEdit TValue="DateTime?" InputMode="DateInputMode.DateTime" @bind-Date="userCalendarDataModel.From" />
+        </FieldBody>
+    </Field>
+
+    <Field Horizontal="true">
+        <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is2.OnDesktop">To</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
+            <DateEdit TValue="DateTime?" InputMode="DateInputMode.DateTime" @bind-Date="userCalendarDataModel.To" />
+        </FieldBody>
+    </Field>
 
     <br />
     <Button Color="Color.Primary" Disabled="@saveDisabled" PreventDefaultOnSubmit="true" Clicked="@Submit">Get calendar events for user</Button>
@@ -63,10 +58,10 @@ else
 
 @code {
     private List<FilteredEventDto> filteredEvents;
-    private UserCalendarDataModel userCalendarDataModel { get; set; } = new UserCalendarDataModel
+    private UserCalendarDataModel userCalendarDataModel { get; set; } = new UserCalendarDataModel()
     {
-        From = "2021-12-13T12:00:00-01:00",
-        To = "2022-12-13T12:00:00-01:00"
+        From = DateTime.UtcNow.AddDays(-7.0),
+        To = DateTime.UtcNow.AddDays(7.0)
     };
 
     private FilteredEventDto selectedFilteredEvent;
@@ -86,14 +81,6 @@ else
 
         e.Status = string.IsNullOrEmpty( email ) ? ValidationStatus.None :
              email.Contains( "@" ) ? ValidationStatus.Success : ValidationStatus.Error;
-    }
-
-    void ValidateFromTo( ValidatorEventArgs e )
-    {
-        var stringDate = Convert.ToString( e.Value );
-
-        e.Status = string.IsNullOrEmpty( stringDate ) ? ValidationStatus.None :
-             stringDate.Contains( "T" ) ? ValidationStatus.Success : ValidationStatus.Error;
     }
 
     async Task Submit()

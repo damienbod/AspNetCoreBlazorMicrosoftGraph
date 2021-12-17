@@ -10,9 +10,9 @@ namespace AspNetCoreMicrosoftGraph
         public string Email { get; set; }
 
         [Required]
-        public string From { get; set; }
+        public DateTime? From { get; set; }
 
         [Required]
-        public string To { get; set; }
+        public DateTime? To { get; set; }
     }
 }
