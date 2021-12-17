@@ -92,9 +92,9 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
         public async Task<IEnumerable<FilteredEventDto>> UserCalendar(UserCalendarDataModel userCalendarDataModel)
         {
             var userCalendar = await _graphApiClientService.GetCalanderForUser(
-                userCalendarDataModel.Email,
-                "2021-12-10T12:00:00-01:00",
-                "2023-12-10T12:00:00-01:00");
+                userCalendarDataModel.Email, 
+                userCalendarDataModel.From.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"),
+                userCalendarDataModel.To.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"));
 
             return userCalendar.Select(l => new FilteredEventDto
             {
