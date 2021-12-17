@@ -92,7 +92,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
         public async Task<IEnumerable<FilteredEventDto>> UserCalendar(UserCalendarDataModel userCalendarDataModel)
         {
             var userCalendar = await _graphApiClientService.GetCalanderForUser(
-                User.Identity.Name,
+                userCalendarDataModel.Email,
                 "2021-12-13T12:00:00-01:00",
                 "2023-12-13T12:00:00-01:00");
 

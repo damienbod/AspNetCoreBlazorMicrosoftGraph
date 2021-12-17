@@ -72,7 +72,7 @@ else
         var token = await JSRuntime.InvokeAsync<string>("getAntiForgeryToken");
         var client = HttpClientFactory.CreateClient("default");
         client.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
-        var response = await client.PostAsJsonAsync<string>("api/GraphApiCalls/UserCalendar", userCalendarDataModel);
+        var response = await client.PostAsJsonAsync<UserCalendarDataModel>("api/GraphApiCalls/UserCalendar", userCalendarDataModel);
         if(response.IsSuccessStatusCode)
         {
             filteredEvents = await response.Content.ReadFromJsonAsync<List<FilteredEventDto>>();
