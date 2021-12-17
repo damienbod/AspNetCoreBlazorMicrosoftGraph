@@ -14,6 +14,23 @@
             </Feedback>
         </TextEdit>
     </Validation>
+    
+    <TextEdit Placeholder="Enter From" @bind-Text="userCalendarDataModel.From" >
+        <Feedback>
+            <ValidationNone>Please enter the from date time.</ValidationNone>
+            <ValidationSuccess>From is good.</ValidationSuccess>
+            <ValidationError>Enter valid from date time! 2021-12-13T12:00:00-01:00</ValidationError>
+        </Feedback>
+    </TextEdit>
+
+    <TextEdit Placeholder="Enter To" @bind-Text="userCalendarDataModel.To" >
+        <Feedback>
+            <ValidationNone>Please enter the to date time.</ValidationNone>
+            <ValidationSuccess>To is good.</ValidationSuccess>
+            <ValidationError>Enter valid to date time 2021-12-13T12:00:00-01:00!</ValidationError>
+        </Feedback>
+    </TextEdit>
+
     <br />
     <Button Color="Color.Primary" Disabled="@saveDisabled" PreventDefaultOnSubmit="true" Clicked="@Submit">Get calendar events for user</Button>
 </Validations>
@@ -22,7 +39,7 @@
 
 @if (filteredEvents == null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>@noDataResult</em></p>
 }
 else
 {
@@ -42,7 +59,12 @@ else
 
 @code {
     private List<FilteredEventDto> filteredEvents;
-    private UserCalendarDataModel userCalendarDataModel { get; set; } = new UserCalendarDataModel();
+    private UserCalendarDataModel userCalendarDataModel { get; set; } = new UserCalendarDataModel
+    {
+        From = "2021-12-13T12:00:00-01:00",
+        To = "2022-12-13T12:00:00-01:00"
+    };
+
     private FilteredEventDto selectedFilteredEvent;
     private string? noDataResult { get; set; } = "no data";
     bool saveDisabled = true;

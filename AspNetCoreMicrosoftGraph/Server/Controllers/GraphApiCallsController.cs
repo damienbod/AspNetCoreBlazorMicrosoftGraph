@@ -93,8 +93,8 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
         {
             var userCalendar = await _graphApiClientService.GetCalanderForUser(
                 userCalendarDataModel.Email,
-                "2021-12-13T12:00:00-01:00",
-                "2023-12-13T12:00:00-01:00");
+                userCalendarDataModel.From,
+                userCalendarDataModel.To);
 
             return userCalendar.Select(l => new FilteredEventDto
             {
