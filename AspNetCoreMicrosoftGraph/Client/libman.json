@@ -51,20 +51,6 @@
         "webfonts/fa-solid-900.woff",
         "webfonts/fa-solid-900.woff2"
       ]
-    },
-    {
-      "library": "open-iconic@1.1.1",
-      "destination": "wwwroot/lib/open-iconic/",
-      "files": [
-        "font/css/open-iconic.min.css",
-        "font/fonts/open-iconic.svg",
-        "font/fonts/open-iconic.otf",
-        "font/fonts/open-iconic.eot",
-        "font/css/open-iconic-bootstrap.min.css",
-        "font/css/open-iconic-bootstrap.css",
-        "font/fonts/open-iconic.ttf",
-        "font/fonts/open-iconic.woff"
-      ]
     }
   ]
 }

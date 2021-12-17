@@ -1,5 +1,4 @@
-﻿@import url('lib/open-iconic/font/css/open-iconic-bootstrap.min.css');
-
+﻿
 @use "@material/floating-label/mdc-floating-label";
 @use "@material/line-ripple/mdc-line-ripple";
 @use "@material/notched-outline/mdc-notched-outline";

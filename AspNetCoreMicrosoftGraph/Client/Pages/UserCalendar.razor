@@ -44,7 +44,7 @@ else
 {
     <DataGrid TItem="FilteredEventDto"
               Data="@filteredEvents" Bordered="true"
-              @bind-SelectedRow="@selectedFilteredEvent"
+              @bind-SelectedRow="@selectedFilteredEvent" PageSize=15
               Responsive>
         <DataGridCommandColumn TItem="FilteredEventDto" />
         <DataGridColumn TItem="FilteredEventDto" Field="@nameof(FilteredEventDto.Subject)" Caption="Subject" Sortable="true" />
