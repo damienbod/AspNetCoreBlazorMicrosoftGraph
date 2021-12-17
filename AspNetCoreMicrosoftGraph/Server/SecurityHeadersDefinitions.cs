@@ -37,7 +37,7 @@ namespace AspNetCoreMicrosoftGraph.Server
                     // due to Blazor
                     builder.AddScriptSrc()
                         .Self()
-                        .WithHash256("v8v3RKRPmN4odZ1CWM5gw80QKPCCWMcpNeOmimNL2AA=")
+                        .UnsafeInline()
                         .UnsafeEval();
 
                     // due to Blazor hot reload requires you to disable script and style CSP protection

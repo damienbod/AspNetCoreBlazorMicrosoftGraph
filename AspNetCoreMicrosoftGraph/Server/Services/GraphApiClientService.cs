@@ -16,7 +16,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
         public async Task<User> GetGraphApiUser(string email)
         {
             var upn = await GetUserIdAsync(email);
-            if (!string.IsNullOrEmpty(upn))
+            if (string.IsNullOrEmpty(upn))
                 return null;
 
             return await _graphServiceClient.Users[upn]
@@ -37,7 +37,6 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
 
             return user.MailboxSettings;
         }
-        
 
         private async Task<string> GetUserIdAsync(string email)
         {
