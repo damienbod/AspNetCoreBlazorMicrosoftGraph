@@ -55,3 +55,7 @@ a {
 #app { min-height: 100%; }
 
 .card-header { font-weight: bold; }
+
+.padright{
+    padding-right:5px;
+}
