@@ -34,11 +34,19 @@ namespace AspNetCoreMicrosoftGraph.Server
                     builder.AddBaseUri().Self();
                     builder.AddFrameAncestors().None();
 
+                    // sha256-v8v3RKRPmN4odZ1CWM5gw80QKPCCWMcpNeOmimNL2AA=
+
                     // due to Blazor
                     builder.AddScriptSrc()
                         .Self()
-                        .UnsafeInline()
+                        .WithHash256("v8v3RKRPmN4odZ1CWM5gw80QKPCCWMcpNeOmimNL2AA=")
                         .UnsafeEval();
+
+                    // due to Blazor
+                    //builder.AddScriptSrc()
+                    //    .Self()
+                    //    .UnsafeInline()
+                    //    .UnsafeEval();
 
                     // due to Blazor hot reload requires you to disable script and style CSP protection
                     // if using hot reload, DO NOT deploy an with an insecure CSP
