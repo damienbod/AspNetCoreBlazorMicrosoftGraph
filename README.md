@@ -55,3 +55,5 @@ https://docs.microsoft.com/en-us/graph/api/user-get-mailboxsettings
 https://docs.microsoft.com/en-us/graph/api/presence-get
 
 https://docs.microsoft.com/en-us/aspnet/core/blazor/security/content-security-policy
+
+https://github.com/andrewlock/NetEscapades.AspNetCore.SecurityHeaders
