@@ -4,6 +4,13 @@
 
 ![User Calendar](https://github.com/damienbod/AspNetCoreBlazorMicrosoftGraph/blob/main/images/BlazorGraph_03.png)
 
+## Blogs
+
+[Use calendar, mailbox settings and Teams presence in ASP.NET Core hosted Blazor WASM with Microsoft Graph](https://damienbod.com)
+
+## History
+
+2021-12-19 first version
 
 ### Email client
 
