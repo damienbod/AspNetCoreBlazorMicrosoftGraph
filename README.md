@@ -2,6 +2,9 @@
 
 # ASP.NET Core Blazor with Microsoft Graph samples
 
+![User Calendar](https://github.com/damienbod/AspNetCoreBlazorMicrosoftGraph/blob/main/images/BlazorGraph_03.png)
+
+
 ### Email client
 
 The Azure App registration requires the Graph API delegated **Mail.Send** and the **Mail.ReadWrite** scopes.
