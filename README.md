@@ -37,3 +37,9 @@ The Azure App registration requires the Graph API delegated **User.Read.All** **
 # Links
 
 https://blazorise.com/
+
+https://github.com/AzureAD/microsoft-identity-web</p>
+
+https://docs.microsoft.com/en-us/graph/api/user-get-mailboxsettings
+
+https://docs.microsoft.com/en-us/graph/api/presence-get

@@ -15,22 +15,22 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
 
         public async Task<User> GetGraphApiUser(string email)
         {
-            var upn = await GetUserIdAsync(email);
-            if (string.IsNullOrEmpty(upn))
+            var id = await GetUserIdAsync(email);
+            if (string.IsNullOrEmpty(id))
                 return null;
 
-            return await _graphServiceClient.Users[upn]
+            return await _graphServiceClient.Users[id]
                 .Request()
                 .GetAsync();
         }
 
         public async Task<MailboxSettings> GetUserMailboxSettings(string email)
         {
-            var upn = await GetUserIdAsync(email);
-            if (string.IsNullOrEmpty(upn))
+            var id = await GetUserIdAsync(email);
+            if (string.IsNullOrEmpty(id))
                 return null;
 
-            var user = await _graphServiceClient.Users[upn]
+            var user = await _graphServiceClient.Users[id]
                 .Request()
                 .Select("MailboxSettings")
                 .GetAsync();
@@ -88,8 +88,8 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
 
         private async Task<IUserCalendarViewCollectionPage> GetCalanderForUserUsingGraph(string email, string from, string to)
         {
-            var upn = await GetUserIdAsync(email);
-            if (string.IsNullOrEmpty(upn))
+            var id = await GetUserIdAsync(email);
+            if (string.IsNullOrEmpty(id))
                 return null;
 
             var queryOptions = new List<QueryOption>()
@@ -98,7 +98,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
                 new QueryOption("endDateTime", to)
             };
 
-            var calendarView = await _graphServiceClient.Users[upn].CalendarView
+            var calendarView = await _graphServiceClient.Users[id].CalendarView
                 .Request(queryOptions)
                 .Select("start,end,subject,location,sensitivity, showAs, isAllDay")
                 .GetAsync();
@@ -128,11 +128,11 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
 
         private async Task<ICloudCommunicationsGetPresencesByUserIdCollectionPage> GetPresenceAsync(string email)
         {
-            var upn = await GetUserIdAsync(email);
+            var id = await GetUserIdAsync(email);
 
             var ids = new List<string>()
             {
-                upn
+                id
             };
 
             return await _graphServiceClient.Communications
