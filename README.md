@@ -6,7 +6,7 @@
 
 ## Blogs
 
-[Use calendar, mailbox settings and Teams presence in ASP.NET Core hosted Blazor WASM with Microsoft Graph](https://damienbod.com)
+[Use calendar, mailbox settings and Teams presence in ASP.NET Core hosted Blazor WASM with Microsoft Graph](https://damienbod.com/2021/12/20/use-calendar-mailbox-settings-and-teams-presence-in-asp-net-core-hosted-blazor-wasm-with-microsoft-graph/)
 
 ## History
 
