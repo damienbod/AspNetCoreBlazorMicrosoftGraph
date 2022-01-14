@@ -34,7 +34,7 @@ The Azure App registration requires the Graph API delegated **User.Read.All** an
 
 ### User Mailbox settings client
 
-The Azure App registration requires the Graph API delegated **User.Read.All** **MailboxSettings.Read** scopes.
+The Azure App registration requires the Graph API application **User.Read.All** **MailboxSettings.Read** scopes.
 
 ```json
 "User.read User.Read.All MailboxSettings.Read"
@@ -42,7 +42,7 @@ The Azure App registration requires the Graph API delegated **User.Read.All** **
 
 ### Calendar client
 
-The Azure App registration requires the Graph API delegated **User.Read.All** **Calendars.Read **Calendars.Read.Shared** scopes.
+The Azure App registration requires the Graph API application **User.Read.All** **Calendars.Read **Calendars.Read.Shared** scopes.
 
 ```json
  "User.read User.Read.All Calendars.Read Calendars.Read.Shared"
