@@ -120,5 +120,6 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
 
             return new GraphServiceClient(clientSecretCredential, scopes);
         }
+
     }
 }
