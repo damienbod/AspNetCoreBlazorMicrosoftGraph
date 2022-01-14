@@ -1,6 +1,7 @@
 ﻿using Azure.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AspNetCoreMicrosoftGraph.Server.Services
@@ -14,32 +15,56 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
             _configuration = configuration;
         }
 
-        private async Task<string> GetUserIdAsync()
+        public async Task<List<FilteredEvent>> GetCalanderForUser(string email, string from, string to)
         {
-            var meetingOrganizer = _configuration["AzureAd:MeetingOrganizer"];
-            var filter = $"startswith(userPrincipalName,'{meetingOrganizer}')";
-            var graphServiceClient = GetGraphClient();
+            var userCalendarViewCollectionPages = await GetCalanderForUserUsingGraph(email, from, to);
 
-            var users = await graphServiceClient.Users
-                .Request()
-                .Filter(filter)
-                .GetAsync();
+            var allEvents = new List<FilteredEvent>();
 
-            return users.CurrentPage[0].Id;
+            while (userCalendarViewCollectionPages != null && userCalendarViewCollectionPages.Count > 0)
+            {
+                foreach (var calenderEvent in userCalendarViewCollectionPages)
+                {
+                    var filteredEvent = new FilteredEvent
+                    {
+                        ShowAs = calenderEvent.ShowAs,
+                        Sensitivity = calenderEvent.Sensitivity,
+                        Start = calenderEvent.Start,
+                        End = calenderEvent.End,
+                        Subject = calenderEvent.Subject,
+                        IsAllDay = calenderEvent.IsAllDay,
+                        Location = calenderEvent.Location
+                    };
+                    allEvents.Add(filteredEvent);
+                }
+
+                if (userCalendarViewCollectionPages.NextPageRequest == null)
+                    break;
+            }
+
+            return allEvents;
         }
 
-        public async Task SendEmailAsync(Message message)
+        private async Task<IUserCalendarViewCollectionPage> GetCalanderForUserUsingGraph(string email, string from, string to)
         {
             var graphServiceClient = GetGraphClient();
 
-            var saveToSentItems = true;
+            var id = await GetUserIdAsync(email, graphServiceClient);
+            if (string.IsNullOrEmpty(id))
+                return null;
 
-            var userId = await GetUserIdAsync();
+            var queryOptions = new List<QueryOption>()
+            {
+                new QueryOption("startDateTime", from),
+                new QueryOption("endDateTime", to)
+            };
 
-            await graphServiceClient.Users[userId]
-                .SendMail(message, saveToSentItems)
-                .Request()
-                .PostAsync();
+            var calendarView = await graphServiceClient.Users[id].CalendarView
+                .Request(queryOptions)
+                .Select("start,end,subject,location,sensitivity, showAs, isAllDay")
+                .GetAsync();
+
+            return calendarView;
         }
 
         public async Task<MailboxSettings> GetUserMailboxSettings(string email)
@@ -73,42 +98,6 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
                 return string.Empty;
             }
             return users.CurrentPage[0].Id;
-        }
-
-        public async Task<OnlineMeeting> CreateOnlineMeeting(OnlineMeeting onlineMeeting)
-        {
-            var graphServiceClient = GetGraphClient();
-
-            var userId = await GetUserIdAsync();
-
-            return await graphServiceClient.Users[userId]
-                .OnlineMeetings
-                .Request()
-                .AddAsync(onlineMeeting);
-        }
-
-        public async Task<OnlineMeeting> UpdateOnlineMeeting(OnlineMeeting onlineMeeting)
-        {
-            var graphServiceClient = GetGraphClient();
-
-            var userId = await GetUserIdAsync();
-
-            return await graphServiceClient.Users[userId]
-                .OnlineMeetings[onlineMeeting.Id]
-                .Request()
-                .UpdateAsync(onlineMeeting);
-        }
-
-        public async Task<OnlineMeeting> GetOnlineMeeting(string onlineMeetingId)
-        {
-            var graphServiceClient = GetGraphClient();
-
-            var userId = await GetUserIdAsync();
-
-            return await graphServiceClient.Users[userId]
-                .OnlineMeetings[onlineMeetingId]
-                .Request()
-                .GetAsync();
         }
 
         private GraphServiceClient GetGraphClient()

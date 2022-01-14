@@ -94,7 +94,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
         [HttpPost("UserCalendar")]
         public async Task<IEnumerable<FilteredEventDto>> UserCalendar(UserCalendarDataModel userCalendarDataModel)
         {
-            var userCalendar = await _graphApiClientService.GetCalanderForUser(
+            var userCalendar = await _aadGraphApiApplicationClient.GetCalanderForUser(
                 userCalendarDataModel.Email, 
                 userCalendarDataModel.From.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"),
                 userCalendarDataModel.To.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"));
