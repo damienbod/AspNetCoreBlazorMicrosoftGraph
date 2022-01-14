@@ -10,6 +10,10 @@
 
 ## History
 
+2022-01-14 Added Teams and Email APIs
+
+2022-01-14 updated MailboxSettings and Calander to use application scopes
+
 2021-12-19 first version
 
 ### Email client
