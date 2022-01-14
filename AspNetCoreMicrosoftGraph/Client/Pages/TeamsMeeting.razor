@@ -38,14 +38,11 @@
 else
 {
     // created
-     <table class="table">
+    <h4>@teamsMeetingCreated.Subject</h4>
+    <a href="@teamsMeetingCreated.JoinUrl">@teamsMeetingCreated.JoinUrl</a>
+    <table class="table">
         <tbody>
-            <tr>
-                <td>@teamsMeetingCreated.Subject</td>
-            </tr>
-            <tr>
-                <td>@teamsMeetingCreated.JoinUrl</td>
-            </tr>
+
             @foreach (var data in teamsMeetingCreated.Attendees)
             {
                 <tr>
