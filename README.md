@@ -42,10 +42,18 @@ The Azure App registration requires the Graph API application **User.Read.All** 
 
 ### Calendar client
 
-The Azure App registration requires the Graph API application **User.Read.All** **Calendars.Read **Calendars.Read.Shared** scopes.
+The Azure App registration requires the Graph API application **User.Read.All** **Calendars.Read** **Calendars.Read.Shared** scopes.
 
 ```json
  "User.read User.Read.All Calendars.Read Calendars.Read.Shared"
+```
+
+### Teams client
+
+Requires the delegated **OnlineMeetings.ReadWrite** permission
+
+```json
+ "OnlineMeetings.ReadWrite"
 ```
 
 # Links
