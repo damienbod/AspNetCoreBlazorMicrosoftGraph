@@ -17,20 +17,20 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
     [Route("api/[controller]")]
     public class GraphApiCallsController : ControllerBase
     {
-        private GraphApiClientService _graphApiClientService;
-        private AadGraphApiApplicationClient _aadGraphApiApplicationClient;
+        private MicrosoftGraphDelegatedClient _microsoftGraphDelegatedClient;
+        private MicrosoftGraphApplicationClient _microsoftGraphApplicationClient;
 
-        public GraphApiCallsController(GraphApiClientService graphApiClientService,
-            AadGraphApiApplicationClient aadGraphApiApplicationClient)
+        public GraphApiCallsController(MicrosoftGraphDelegatedClient microsoftGraphDelegatedClient,
+            MicrosoftGraphApplicationClient microsoftGraphApplicationClient)
         {
-            _graphApiClientService = graphApiClientService;
-            _aadGraphApiApplicationClient = aadGraphApiApplicationClient;
+            _microsoftGraphDelegatedClient = microsoftGraphDelegatedClient;
+            _microsoftGraphApplicationClient = microsoftGraphApplicationClient;
         }
 
         [HttpGet("UserProfile")]
         public async Task<IEnumerable<string>> UserProfile()
         {
-            var userData = await _graphApiClientService.GetGraphApiUser(User.Identity.Name);
+            var userData = await _microsoftGraphDelegatedClient.GetGraphApiUser(User.Identity.Name);
             return new List<string> { $"DisplayName: {userData.DisplayName}",
                 $"GivenName: {userData.GivenName}", $"Preferred Language: {userData.PreferredLanguage}" };
         }
@@ -42,7 +42,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
                 return BadRequest("No email");
             try
             {
-                var mailbox = await _aadGraphApiApplicationClient.GetUserMailboxSettings(email);
+                var mailbox = await _microsoftGraphApplicationClient.GetUserMailboxSettings(email);
 
                 if(mailbox == null)
                 {
@@ -71,7 +71,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
                 return BadRequest("No email");
             try
             {
-                var userPresence = await _graphApiClientService.GetPresenceforEmail(email);
+                var userPresence = await _microsoftGraphDelegatedClient.GetPresenceforEmail(email);
 
                 if (userPresence.Count == 0)
                 {
@@ -94,7 +94,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
         [HttpPost("UserCalendar")]
         public async Task<IEnumerable<FilteredEventDto>> UserCalendar(UserCalendarDataModel userCalendarDataModel)
         {
-            var userCalendar = await _aadGraphApiApplicationClient.GetCalanderForUser(
+            var userCalendar = await _microsoftGraphApplicationClient.GetCalanderForUser(
                 userCalendarDataModel.Email, 
                 userCalendarDataModel.From.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"),
                 userCalendarDataModel.To.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"));

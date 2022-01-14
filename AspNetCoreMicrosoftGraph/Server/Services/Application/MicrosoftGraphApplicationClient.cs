@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace AspNetCoreMicrosoftGraph.Server.Services
 {
-    public class AadGraphApiApplicationClient
+    public class MicrosoftGraphApplicationClient
     {
         private readonly IConfiguration _configuration;
 
-        public AadGraphApiApplicationClient(IConfiguration configuration)
+        public MicrosoftGraphApplicationClient(IConfiguration configuration)
         {
             _configuration = configuration;
         }

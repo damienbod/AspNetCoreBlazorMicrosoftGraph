@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace AspNetCoreMicrosoftGraph.Server.Services
 {
-    public class GraphApiClientService
+    public class MicrosoftGraphDelegatedClient
     {
         private readonly GraphServiceClient _graphServiceClient;
 
-        public GraphApiClientService(GraphServiceClient graphServiceClient)
+        public MicrosoftGraphDelegatedClient(GraphServiceClient graphServiceClient)
         {
             _graphServiceClient = graphServiceClient;
         }
