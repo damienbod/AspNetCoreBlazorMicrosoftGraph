@@ -21,7 +21,12 @@ namespace AspNetCoreMicrosoftGraph.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<GraphApiClientService>();
+            services.AddScoped<MicrosoftGraphDelegatedClient>();
+            services.AddScoped<EmailService>();
+            services.AddScoped<TeamsService>();
+
+            services.AddScoped<MicrosoftGraphApplicationClient>();
+            services.AddSingleton<ApiTokenInMemoryClient>();
 
             services.AddAntiforgery(options =>
             {

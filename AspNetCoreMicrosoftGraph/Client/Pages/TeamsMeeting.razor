@@ -1,0 +1,94 @@
+﻿@page "/teamsmeeting"
+@inject IHttpClientFactory HttpClientFactory
+@inject IJSRuntime JSRuntime
+
+<h4>Create Teams online meeting</h4>
+
+<Validations>
+    <TextEdit Placeholder="Please add attendees email" @bind-Text="teamsMeetingDataModel.Attendees" >
+    </TextEdit>
+
+    <TextEdit Placeholder="Meeting name" @bind-Text="teamsMeetingDataModel.MeetingName" >
+    </TextEdit>
+
+    <Field Horizontal="true">
+        <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is2.OnDesktop">From</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
+            <DateEdit TValue="DateTime?" InputMode="DateInputMode.DateTime" @bind-Date="teamsMeetingDataModel.From" />
+        </FieldBody>
+    </Field>
+
+    <Field Horizontal="true">
+        <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is2.OnDesktop">To</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
+            <DateEdit TValue="DateTime?" InputMode="DateInputMode.DateTime" @bind-Date="teamsMeetingDataModel.To" />
+        </FieldBody>
+    </Field>
+
+    <br />
+    <Button Color="Color.Primary" Disabled="@saveDisabled" PreventDefaultOnSubmit="true" Clicked="@CreateTeamsMeeting">Create</Button>
+</Validations>
+
+ <br /><br />
+
+@if (teamsMeetingCreated == null)
+{
+    <p><em>@noDataResult</em></p>
+}
+else
+{
+    // created
+    <h4>@teamsMeetingCreated.Subject</h4>
+    <a href="@teamsMeetingCreated.JoinUrl">@teamsMeetingCreated.JoinUrl</a>
+    <table class="table">
+        <tbody>
+
+            @foreach (var data in teamsMeetingCreated.Attendees)
+            {
+                <tr>
+                    <td>@data</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private TeamsMeetingDataModel teamsMeetingDataModel { get; set; } = new TeamsMeetingDataModel()
+    {
+        From = DateTime.UtcNow.AddMinutes(15.0),
+        To = DateTime.UtcNow.AddMinutes(75.0)
+    };
+
+    private TeamsMeetingCreated teamsMeetingCreated { get; set; } = new TeamsMeetingCreated()
+    {
+        Attendees = new List<string>()
+    };
+
+    private string noDataResult { get; set; } = "no data";
+    
+    bool saveDisabled = false;
+
+    async Task CreateTeamsMeeting()
+    {
+        await PostCreateTeamsMeeting(teamsMeetingDataModel);
+    }
+
+    private async Task PostCreateTeamsMeeting(TeamsMeetingDataModel teamsMeetingDataModel)
+    {
+        var token = await JSRuntime.InvokeAsync<string>("getAntiForgeryToken");
+        var client = HttpClientFactory.CreateClient("default");
+        client.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);
+        var response = await client.PostAsJsonAsync<TeamsMeetingDataModel>("api/GraphApiCalls/CreateTeamsMeeting", teamsMeetingDataModel);
+        if(response.IsSuccessStatusCode)
+        {
+            teamsMeetingCreated = await response.Content.ReadFromJsonAsync<TeamsMeetingCreated>();
+        }
+        else
+        {
+            var error = await response.Content.ReadAsStringAsync();
+            teamsMeetingCreated = null;
+            noDataResult = error;
+        }
+    }
+}
