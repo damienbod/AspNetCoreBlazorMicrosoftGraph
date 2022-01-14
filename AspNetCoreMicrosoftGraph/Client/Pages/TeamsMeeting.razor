@@ -26,7 +26,7 @@
     </Field>
 
     <br />
-    <Button Color="Color.Primary" Disabled="@saveDisabled" PreventDefaultOnSubmit="true" Clicked="@CreateTeamsMeeting">Get calendar events for user</Button>
+    <Button Color="Color.Primary" Disabled="@saveDisabled" PreventDefaultOnSubmit="true" Clicked="@CreateTeamsMeeting">Create</Button>
 </Validations>
 
  <br /><br />
@@ -38,6 +38,22 @@
 else
 {
     // created
+     <table class="table">
+        <tbody>
+            <tr>
+                <td>@teamsMeetingCreated.Subject</td>
+            </tr>
+            <tr>
+                <td>@teamsMeetingCreated.JoinUrl</td>
+            </tr>
+            @foreach (var data in teamsMeetingCreated.Attendees)
+            {
+                <tr>
+                    <td>@data</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @code {
@@ -47,7 +63,10 @@ else
         To = DateTime.UtcNow.AddMinutes(75.0)
     };
 
-    private TeamsMeetingCreated teamsMeetingCreated { get; set; } = new TeamsMeetingCreated();
+    private TeamsMeetingCreated teamsMeetingCreated { get; set; } = new TeamsMeetingCreated()
+    {
+        Attendees = new List<string>()
+    };
 
     private string noDataResult { get; set; } = "no data";
     
