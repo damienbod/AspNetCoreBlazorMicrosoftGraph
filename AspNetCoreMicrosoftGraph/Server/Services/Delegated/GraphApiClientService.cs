@@ -24,20 +24,6 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
                 .GetAsync();
         }
 
-        public async Task<MailboxSettings> GetUserMailboxSettings(string email)
-        {
-            var id = await GetUserIdAsync(email);
-            if (string.IsNullOrEmpty(id))
-                return null;
-
-            var user = await _graphServiceClient.Users[id]
-                .Request()
-                .Select("MailboxSettings")
-                .GetAsync();
-
-            return user.MailboxSettings;
-        }
-
         private async Task<string> GetUserIdAsync(string email)
         {
             var filter = $"userPrincipalName eq '{email}'";

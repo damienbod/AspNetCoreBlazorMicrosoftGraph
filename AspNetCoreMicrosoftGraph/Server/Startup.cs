@@ -23,6 +23,9 @@ namespace AspNetCoreMicrosoftGraph.Server
         {
             services.AddScoped<GraphApiClientService>();
 
+            services.AddScoped<AadGraphApiApplicationClient>();
+            services.AddSingleton<ApiTokenInMemoryClient>();
+
             services.AddAntiforgery(options =>
             {
                 options.HeaderName = "X-XSRF-TOKEN";

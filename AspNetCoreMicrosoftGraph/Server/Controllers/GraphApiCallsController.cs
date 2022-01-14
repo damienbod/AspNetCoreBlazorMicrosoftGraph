@@ -18,10 +18,13 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
     public class GraphApiCallsController : ControllerBase
     {
         private GraphApiClientService _graphApiClientService;
+        private AadGraphApiApplicationClient _aadGraphApiApplicationClient;
 
-        public GraphApiCallsController(GraphApiClientService graphApiClientService)
+        public GraphApiCallsController(GraphApiClientService graphApiClientService,
+            AadGraphApiApplicationClient aadGraphApiApplicationClient)
         {
             _graphApiClientService = graphApiClientService;
+            _aadGraphApiApplicationClient = aadGraphApiApplicationClient;
         }
 
         [HttpGet("UserProfile")]
@@ -39,7 +42,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
                 return BadRequest("No email");
             try
             {
-                var mailbox = await _graphApiClientService.GetUserMailboxSettings(email);
+                var mailbox = await _aadGraphApiApplicationClient.GetUserMailboxSettings(email);
 
                 if(mailbox == null)
                 {
