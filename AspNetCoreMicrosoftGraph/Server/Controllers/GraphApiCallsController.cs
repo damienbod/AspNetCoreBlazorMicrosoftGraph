@@ -49,11 +49,11 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
                     return NotFound($"mailbox settings for {email} not found");
                 }
                 var result = new List<MailboxSettingsData> {
-                new MailboxSettingsData { Name = "User Email", Data = email },
-                new MailboxSettingsData { Name = "AutomaticRepliesSetting", Data = mailbox.AutomaticRepliesSetting.Status.ToString() },
-                new MailboxSettingsData { Name = "TimeZone", Data = mailbox.TimeZone },
-                new MailboxSettingsData { Name = "Language", Data = mailbox.Language.DisplayName }
-            };
+                    new MailboxSettingsData { Name = "User Email", Data = email },
+                    new MailboxSettingsData { Name = "AutomaticRepliesSetting", Data = mailbox.AutomaticRepliesSetting.Status.ToString() },
+                    new MailboxSettingsData { Name = "TimeZone", Data = mailbox.TimeZone },
+                    new MailboxSettingsData { Name = "Language", Data = mailbox.Language.DisplayName }
+                };
 
                 return Ok(result);
             }
@@ -62,7 +62,6 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpPost("TeamsPresence")]
         public async Task<IActionResult> PresencePost([FromBody] string email)
@@ -79,9 +78,9 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
                 }
 
                 var result = new List<PresenceData> {
-                new PresenceData { Name = "User Email", Data = email },
-                new PresenceData { Name = "Availability", Data = userPresence[0].Availability }
-            };
+                    new PresenceData { Name = "User Email", Data = email },
+                    new PresenceData { Name = "Availability", Data = userPresence[0].Availability }
+                };
 
                 return Ok(result);
             }
