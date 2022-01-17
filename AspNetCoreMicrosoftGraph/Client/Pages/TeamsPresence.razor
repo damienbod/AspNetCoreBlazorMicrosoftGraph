@@ -48,7 +48,9 @@ else
 
     Task OnStatusChanged( ValidationsStatusChangedEventArgs eventArgs )
     {
-        saveDisabled = eventArgs.Status != ValidationStatus.Success;
+        if (saveDisabled && eventArgs.Status == ValidationStatus.Success) saveDisabled = false;
+
+        if (!saveDisabled && eventArgs.Status != ValidationStatus.Success) saveDisabled = true;
 
         return Task.CompletedTask;
     }
