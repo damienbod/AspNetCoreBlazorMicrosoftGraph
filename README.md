@@ -10,6 +10,8 @@
 
 ## History
 
+2022-01-28 Updated nuget packages
+
 2022-01-14 Added Teams and Email APIs
 
 2022-01-14 updated MailboxSettings and Calander to use application scopes
