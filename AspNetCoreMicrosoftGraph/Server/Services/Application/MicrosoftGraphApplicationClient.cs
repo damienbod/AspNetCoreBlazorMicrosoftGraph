@@ -85,6 +85,7 @@ namespace AspNetCoreMicrosoftGraph.Server.Services
 
         private async Task<string> GetUserIdAsync(string email, GraphServiceClient graphServiceClient)
         {
+            // Add a fix for external users
             var filter = $"userPrincipalName eq '{email}'";
             //var filter = $"startswith(userPrincipalName,'{email}')";
 
