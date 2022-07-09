@@ -1,14 +1,11 @@
-﻿using System;
+﻿namespace AspNetCoreMicrosoftGraph;
 
-namespace AspNetCoreMicrosoftGraph
+public class FilteredEventDto
 {
-    public class FilteredEventDto
-    {
-        public string Start { get; set; }
-        public string End { get; set; }
-        public string Subject { get; set; }
-        public string Sensitivity { get; set; }
-        public string ShowAs { get; set; }
-        public bool IsAllDay { get; set; }  
-    }
+    public string? Start { get; set; }
+    public string? End { get; set; }
+    public string? Subject { get; set; }
+    public string? Sensitivity { get; set; }
+    public string? ShowAs { get; set; }
+    public bool IsAllDay { get; set; }  
 }

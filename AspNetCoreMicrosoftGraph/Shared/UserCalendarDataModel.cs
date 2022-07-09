@@ -1,18 +1,15 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AspNetCoreMicrosoftGraph
+namespace AspNetCoreMicrosoftGraph;
+
+public class UserCalendarDataModel
 {
+    [Required]
+    public string Email { get; set; } = string.Empty;
 
-    public class UserCalendarDataModel
-    {
-        [Required]
-        public string Email { get; set; }
+    [Required]
+    public DateTime? From { get; set; }
 
-        [Required]
-        public DateTime? From { get; set; }
-
-        [Required]
-        public DateTime? To { get; set; }
-    }
+    [Required]
+    public DateTime? To { get; set; }
 }

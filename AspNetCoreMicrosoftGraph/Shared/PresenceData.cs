@@ -1,17 +1,15 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AspNetCoreMicrosoftGraph
+namespace AspNetCoreMicrosoftGraph;
+
+public class PresenceData
 {
-    public class PresenceData
-    {
-        public string Name { get; set; }
-        public string Data { get; set; }
-    }
+    public string? Name { get; set; }
+    public string? Data { get; set; }
+}
 
-    public class EmailPresenceModel
-    {
-        [Required]
-        public string EmailPresence { get; set; }
-    }
+public class EmailPresenceModel
+{
+    [Required]
+    public string EmailPresence { get; set; } = string.Empty;
 }
