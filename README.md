@@ -10,6 +10,8 @@
 
 ## History
 
+2022-07-09 Updated nuget packages
+
 2022-01-28 Updated nuget packages
 
 2022-01-14 Added Teams and Email APIs
