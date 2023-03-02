@@ -1,4 +1,4 @@
-﻿using AspNetCoreMicrosoftGraph.Server.Shared.Authorization;
+﻿using AspNetCoreMicrosoftGraph.Shared.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Json;
@@ -93,7 +93,8 @@ public class HostAuthenticationStateProvider : AuthenticationStateProvider
         {
             foreach (var claim in user.Claims)
             {
-                identity.AddClaim(new Claim(claim.Type, claim.Value));
+                if(claim.Type != null && claim.Value != null)
+                    identity.AddClaim(new Claim(claim.Type, claim.Value));
             }
         }
 

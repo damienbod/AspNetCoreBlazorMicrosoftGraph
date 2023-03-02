@@ -17,8 +17,8 @@ namespace AspNetCoreMicrosoftGraph.Server.Controllers
     [Route("api/[controller]")]
     public class GraphApiCallsController : ControllerBase
     {
-        private MicrosoftGraphDelegatedClient _microsoftGraphDelegatedClient;
-        private MicrosoftGraphApplicationClient _microsoftGraphApplicationClient;
+        private readonly MicrosoftGraphDelegatedClient _microsoftGraphDelegatedClient;
+        private readonly MicrosoftGraphApplicationClient _microsoftGraphApplicationClient;
         private readonly TeamsService _teamsService;
         private readonly EmailService _emailService;
 
