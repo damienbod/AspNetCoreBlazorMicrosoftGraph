@@ -42,7 +42,7 @@ public class MicrosoftGraphApplicationClient
         return allEvents;
     }
 
-    private async Task<IUserCalendarViewCollectionPage> GetCalanderForUserUsingGraph(string email, string from, string to)
+    private async Task<IUserCalendarViewCollectionPage?> GetCalanderForUserUsingGraph(string email, string from, string to)
     {
         var graphServiceClient = GetGraphClient();
 

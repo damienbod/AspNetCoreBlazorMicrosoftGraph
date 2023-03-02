@@ -1,5 +1,4 @@
 ﻿using Microsoft.Graph;
-using System.Reflection.Metadata.Ecma335;
 
 namespace AspNetCoreMicrosoftGraph.Server.Services;
 

@@ -45,7 +45,7 @@ public class ApiTokenInMemoryClient
             AuthenticationProvider = new DelegateAuthenticationProvider(async (requestMessage) =>
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result);
-                await Task.FromResult<object>(null);
+                await Task.FromResult<object?>(null);
             })
         };
 
@@ -57,7 +57,7 @@ public class ApiTokenInMemoryClient
         if (_accessTokens.ContainsKey(api_name))
         {
             var accessToken = _accessTokens.GetValueOrDefault(api_name);
-            if (accessToken.ExpiresIn > DateTime.UtcNow)
+            if (accessToken!.ExpiresIn > DateTime.UtcNow)
             {
                 return accessToken.AccessToken;
             }

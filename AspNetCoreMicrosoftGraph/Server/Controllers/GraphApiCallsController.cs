@@ -32,7 +32,7 @@ public class GraphApiCallsController : ControllerBase
     [HttpGet("UserProfile")]
     public async Task<IEnumerable<string>> UserProfile()
     {
-        var userData = await _microsoftGraphDelegatedClient.GetGraphApiUser(User.Identity.Name);
+        var userData = await _microsoftGraphDelegatedClient.GetGraphApiUser(User.Identity!.Name);
         return new List<string> { $"DisplayName: {userData!.DisplayName}",
             $"GivenName: {userData.GivenName}", $"Preferred Language: {userData.PreferredLanguage}" };
     }

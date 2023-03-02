@@ -35,7 +35,8 @@ public class Startup
         services.AddOptions();
 
         var scopes = Configuration.GetValue<string>("DownstreamApi:Scopes");
-        string[] initialScopes = scopes?.Split(' ');
+        string[]? initialScopes = scopes?.Split(' ');
+        if(scopes == null) throw new ArgumentNullException(nameof(scopes));
 
         services.AddMicrosoftIdentityWebAppAuthentication(Configuration)
             .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
