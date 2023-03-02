@@ -97,8 +97,8 @@ public class GraphApiCallsController : ControllerBase
     {
         var userCalendar = await _microsoftGraphApplicationClient.GetCalanderForUser(
             userCalendarDataModel.Email, 
-            userCalendarDataModel.From.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"),
-            userCalendarDataModel.To.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"));
+            userCalendarDataModel.From!.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"),
+            userCalendarDataModel.To!.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"));
 
         return userCalendar.Select(l => new FilteredEventDto
         {
@@ -106,7 +106,7 @@ public class GraphApiCallsController : ControllerBase
             Sensitivity = l.Sensitivity.ToString(),
             Start = l.Start?.DateTime,
             End = l.End?.DateTime,
-            ShowAs = l.ShowAs.Value.ToString(),
+            ShowAs = l.ShowAs!.Value.ToString(),
             Subject=l.Subject
         });
     }
@@ -116,8 +116,8 @@ public class GraphApiCallsController : ControllerBase
     {
         var meeting = _teamsService.CreateTeamsMeeting(
             teamsMeetingDataModel.MeetingName,
-            teamsMeetingDataModel.From.Value,
-            teamsMeetingDataModel.To.Value);
+            teamsMeetingDataModel.From!.Value,
+            teamsMeetingDataModel.To!.Value);
 
         var attendees = teamsMeetingDataModel.Attendees.Split(';');
         List<string> items = new();

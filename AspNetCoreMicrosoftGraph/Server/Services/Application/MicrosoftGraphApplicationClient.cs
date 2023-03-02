@@ -64,7 +64,7 @@ public class MicrosoftGraphApplicationClient
         return calendarView;
     }
 
-    public async Task<MailboxSettings> GetUserMailboxSettings(string email)
+    public async Task<MailboxSettings?> GetUserMailboxSettings(string email)
     {
         var graphServiceClient = GetGraphClient();
 
@@ -80,7 +80,7 @@ public class MicrosoftGraphApplicationClient
         return user.MailboxSettings;
     }
 
-    private async Task<string> GetUserIdAsync(string email, GraphServiceClient graphServiceClient)
+    private static async Task<string> GetUserIdAsync(string email, GraphServiceClient graphServiceClient)
     {
         // Add a fix for external users
         var filter = $"userPrincipalName eq '{email}'";
