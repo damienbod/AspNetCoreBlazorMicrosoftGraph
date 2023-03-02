@@ -29,7 +29,7 @@ namespace AspNetCoreMicrosoftGraph.Client
 
 
             builder.Services
-                .AddBlazorise(options => { options.ChangeTextOnKeyPress = true; })
+                .AddBlazorise(options => { options.Immediate = true; })
                 .AddMaterialProviders()
                 .AddMaterialIcons()
               .AddFontAwesomeIcons();
