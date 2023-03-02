@@ -2,25 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-	<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
-	<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="blazored.sessionstorage" Version="2.3.0" />
-	<PackageReference Include="Blazorise" Version="1.2.1" />
-	<PackageReference Include="Blazorise.Components" Version="1.2.1" />
-	<PackageReference Include="Blazorise.DataGrid" Version="1.2.1" />
-	<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.1" />
-	<PackageReference Include="Blazorise.Icons.Material" Version="1.2.1" />
-	<PackageReference Include="Blazorise.Material" Version="1.2.1" />
-	<PackageReference Include="Blazorise.Sidebar" Version="1.2.1" />
-	<PackageReference Include="Blazorise.Snackbar" Version="1.2.1" />
-	<PackageReference Include="Blazorise.SpinKit" Version="1.2.1" />
+    <PackageReference Include="blazored.sessionstorage" Version="2.3.0" />
+    <PackageReference Include="Blazorise" Version="1.2.1" />
+    <PackageReference Include="Blazorise.Components" Version="1.2.1" />
+    <PackageReference Include="Blazorise.DataGrid" Version="1.2.1" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.1" />
+    <PackageReference Include="Blazorise.Icons.Material" Version="1.2.1" />
+    <PackageReference Include="Blazorise.Material" Version="1.2.1" />
+    <PackageReference Include="Blazorise.Sidebar" Version="1.2.1" />
+    <PackageReference Include="Blazorise.Snackbar" Version="1.2.1" />
+    <PackageReference Include="Blazorise.SpinKit" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>

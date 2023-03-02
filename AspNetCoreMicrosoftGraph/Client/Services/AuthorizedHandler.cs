@@ -1,43 +1,48 @@
 ﻿using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace AspNetCoreMicrosoftGraph.Client.Services
+namespace AspNetCoreMicrosoftGraph.Server.Client.Services;
+
+// orig src https://github.com/berhir/BlazorWebAssemblyCookieAuth
+public class AuthorizedHandler : DelegatingHandler
 {
-    // orig src https://github.com/berhir/BlazorWebAssemblyCookieAuth
-    public class AuthorizedHandler : DelegatingHandler
-    {
-        private readonly HostAuthenticationStateProvider _authenticationStateProvider;
+    private readonly HostAuthenticationStateProvider _authenticationStateProvider;
 
-        public AuthorizedHandler(HostAuthenticationStateProvider authenticationStateProvider)
+    public AuthorizedHandler(HostAuthenticationStateProvider authenticationStateProvider)
+    {
+        _authenticationStateProvider = authenticationStateProvider;
+    }
+
+    protected override async Task<HttpResponseMessage> SendAsync(
+        HttpRequestMessage request,
+        CancellationToken cancellationToken)
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        HttpResponseMessage responseMessage;
+        if (authState.User.Identity!= null && !authState.User.Identity.IsAuthenticated)
         {
-            _authenticationStateProvider = authenticationStateProvider;
+            // if user is not authenticated, immediately set response status to 401 Unauthorized
+            responseMessage = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+        }
+        else
+        {
+            responseMessage = await base.SendAsync(request, cancellationToken);
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request,
-            CancellationToken cancellationToken)
+        if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
         {
-            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            HttpResponseMessage responseMessage;
-            if (!authState.User.Identity.IsAuthenticated)
-            {
-                // if user is not authenticated, immediately set response status to 401 Unauthorized
-                responseMessage = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-            }
-            else
-            {
-                responseMessage = await base.SendAsync(request, cancellationToken);
-            }
+            var content = await responseMessage.Content.ReadAsStringAsync();
 
-            if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
+            // if server returned 401 Unauthorized, redirect to login page
+            if (content != null && content.Contains("acr")) // CAE
             {
-                // if server returned 401 Unauthorized, redirect to login page
+                _authenticationStateProvider.CaeStepUp(content);
+            }
+            else // standard
+            {
                 _authenticationStateProvider.SignIn();
             }
-
-            return responseMessage;
         }
+
+        return responseMessage;
     }
 }
