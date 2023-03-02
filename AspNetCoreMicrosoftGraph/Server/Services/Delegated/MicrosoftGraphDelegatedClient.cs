@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graph;
+using System.Reflection.Metadata.Ecma335;
 
 namespace AspNetCoreMicrosoftGraph.Server.Services;
 
@@ -11,8 +12,10 @@ public class MicrosoftGraphDelegatedClient
         _graphServiceClient = graphServiceClient;
     }
 
-    public async Task<User?> GetGraphApiUser(string email)
+    public async Task<User?> GetGraphApiUser(string? email)
     {
+        if (email == null) return null;
+
         var id = await GetUserIdAsync(email);
         if (string.IsNullOrEmpty(id))
             return null;
