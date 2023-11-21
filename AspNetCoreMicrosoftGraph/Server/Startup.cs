@@ -21,8 +21,7 @@ public class Startup
         services.AddScoped<TeamsService>();
 
         services.AddScoped<MicrosoftGraphApplicationClient>();
-        services.AddSingleton<ApiTokenInMemoryClient>();
-
+   
         services.AddAntiforgery(options =>
         {
             options.HeaderName = "X-XSRF-TOKEN";

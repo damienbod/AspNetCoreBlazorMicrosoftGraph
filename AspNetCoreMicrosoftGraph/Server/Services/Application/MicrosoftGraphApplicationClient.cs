@@ -1,5 +1,6 @@
 ﻿using Azure.Identity;
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 
 namespace AspNetCoreMicrosoftGraph.Server.Services;
 
