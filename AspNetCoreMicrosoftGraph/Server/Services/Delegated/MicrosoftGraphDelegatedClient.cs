@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graph;
+using Microsoft.Graph.Communications.GetPresencesByUserId;
 using Microsoft.Graph.Me.SendMail;
 using Microsoft.Graph.Models;
 
@@ -50,37 +51,38 @@ public class MicrosoftGraphDelegatedClient
 
     public async Task<List<Presence>> GetPresenceforEmail(string email)
     {
-        var cloudCommunicationPages = await GetPresenceAsync(email);
+        var presencesByUserIdPostResponse = await GetPresenceAsync(email);
 
         var allPresenceItems = new List<Presence>();
 
-        while (cloudCommunicationPages != null && cloudCommunicationPages.Count > 0)
+        if (presencesByUserIdPostResponse != null && presencesByUserIdPostResponse.Value!.Count > 0)
         {
-            foreach (var presence in cloudCommunicationPages)
+            foreach (var presence in presencesByUserIdPostResponse.Value)
             {
                 allPresenceItems.Add(presence);
             }
-
-            if (cloudCommunicationPages.NextPageRequest == null)
-                break;
         }
 
         return allPresenceItems;
     }
 
-    private async Task<ICloudCommunicationsGetPresencesByUserIdCollectionPage> GetPresenceAsync(string email)
+    private async Task<GetPresencesByUserIdPostResponse?> GetPresenceAsync(string email)
     {
         var id = await GetUserIdAsync(email);
 
-        var ids = new List<string>()
+        var requestBody = new GetPresencesByUserIdPostRequestBody
         {
-            id
+            Ids = new List<string>
+            {
+                id
+            },
         };
 
-        return await _graphServiceClient.Communications
-            .GetPresencesByUserId(ids)
-            .Request()
-            .PostAsync();
+        var result = await _graphServiceClient.Communications
+            .GetPresencesByUserId
+            .PostAsGetPresencesByUserIdPostResponseAsync(requestBody);
+
+        return result;
     }
 
     private async Task<string> GetUserIdAsync(string email)
