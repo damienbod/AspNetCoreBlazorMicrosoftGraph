@@ -10,19 +10,14 @@
 
 ## History
 
-2023-11-21 Updated .NET 8
-
-2023-03-02 Updated nuget packages, .NET 7
-
-2022-07-09 Updated nuget packages
-
-2022-01-28 Updated nuget packages
-
-2022-01-14 Added Teams and Email APIs
-
-2022-01-14 updated MailboxSettings and Calander to use application scopes
-
-2021-12-19 first version
+- 2023-11-21 Updated Graph 5 SDK
+- 2023-11-21 Updated .NET 8
+- 2023-03-02 Updated nuget packages, .NET 7
+- 2022-07-09 Updated nuget packages
+- 2022-01-28 Updated nuget packages
+- 2022-01-14 Added Teams and Email APIs
+- 2022-01-14 updated MailboxSettings and Calander to use application scopes
+- 2021-12-19 first version
 
 ### Email client
 
