@@ -65,12 +65,11 @@ public class MicrosoftGraphApplicationClient
         if (string.IsNullOrEmpty(id))
             return null;
 
-        var user = await graphServiceClient.Users[id]
-            .Request()
-            .Select("MailboxSettings")
+        var userMailboxSettings = await graphServiceClient.Users[id]
+            .MailboxSettings
             .GetAsync();
 
-        return user.MailboxSettings;
+        return userMailboxSettings;
     }
 
     private static async Task<string> GetUserIdAsync(string email, GraphServiceClient graphServiceClient)
