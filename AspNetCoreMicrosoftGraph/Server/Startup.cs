@@ -21,8 +21,7 @@ public class Startup
         services.AddScoped<TeamsService>();
 
         services.AddScoped<MicrosoftGraphApplicationClient>();
-        services.AddSingleton<ApiTokenInMemoryClient>();
-
+   
         services.AddAntiforgery(options =>
         {
             options.HeaderName = "X-XSRF-TOKEN";
@@ -40,7 +39,7 @@ public class Startup
 
         services.AddMicrosoftIdentityWebAppAuthentication(Configuration)
             .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-            .AddMicrosoftGraph("https://graph.microsoft.com/beta", scopes)
+            .AddMicrosoftGraph("https://graph.microsoft.com/v1.0", initialScopes)
             .AddInMemoryTokenCaches();
 
         services.AddControllersWithViews(options =>

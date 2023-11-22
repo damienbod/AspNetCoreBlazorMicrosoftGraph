@@ -2,7 +2,7 @@
 
 public class TeamsMeetingCreated
 {
-    public string? JoinUrl { get; set; }
+    public string? JoinWebUrl { get; set; }
 
     public string? Subject { get; set; }
 

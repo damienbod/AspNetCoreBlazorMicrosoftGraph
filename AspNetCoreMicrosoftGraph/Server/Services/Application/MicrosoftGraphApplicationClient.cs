@@ -1,5 +1,6 @@
 ﻿using Azure.Identity;
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 
 namespace AspNetCoreMicrosoftGraph.Server.Services;
 
@@ -14,35 +15,29 @@ public class MicrosoftGraphApplicationClient
 
     public async Task<List<FilteredEvent>> GetCalanderForUser(string email, string from, string to)
     {
-        var userCalendarViewCollectionPages = await GetCalanderForUserUsingGraph(email, from, to);
+        var events = await GetCalanderForUserUsingGraph(email, from, to);
 
         var allEvents = new List<FilteredEvent>();
 
-        while (userCalendarViewCollectionPages != null && userCalendarViewCollectionPages.Count > 0)
+        foreach (var calenderEvent in events!)
         {
-            foreach (var calenderEvent in userCalendarViewCollectionPages)
+            var filteredEvent = new FilteredEvent
             {
-                var filteredEvent = new FilteredEvent
-                {
-                    ShowAs = calenderEvent.ShowAs,
-                    Sensitivity = calenderEvent.Sensitivity,
-                    Start = calenderEvent.Start,
-                    End = calenderEvent.End,
-                    Subject = calenderEvent.Subject,
-                    IsAllDay = calenderEvent.IsAllDay,
-                    Location = calenderEvent.Location
-                };
-                allEvents.Add(filteredEvent);
-            }
-
-            if (userCalendarViewCollectionPages.NextPageRequest == null)
-                break;
+                ShowAs = calenderEvent.ShowAs,
+                Sensitivity = calenderEvent.Sensitivity,
+                Start = calenderEvent.Start,
+                End = calenderEvent.End,
+                Subject = calenderEvent.Subject,
+                IsAllDay = calenderEvent.IsAllDay,
+                Location = calenderEvent.Location
+            };
+            allEvents.Add(filteredEvent);
         }
 
         return allEvents;
     }
 
-    private async Task<IUserCalendarViewCollectionPage?> GetCalanderForUserUsingGraph(string email, string from, string to)
+    private async Task<List<Event>?> GetCalanderForUserUsingGraph(string email, string from, string to)
     {
         var graphServiceClient = GetGraphClient();
 
@@ -50,18 +45,16 @@ public class MicrosoftGraphApplicationClient
         if (string.IsNullOrEmpty(id))
             return null;
 
-        var queryOptions = new List<QueryOption>()
-        {
-            new QueryOption("startDateTime", from),
-            new QueryOption("endDateTime", to)
-        };
-
         var calendarView = await graphServiceClient.Users[id].CalendarView
-            .Request(queryOptions)
-            .Select("start,end,subject,location,sensitivity, showAs, isAllDay")
-            .GetAsync();
+            .GetAsync(requestConfiguration =>
+            {
+                requestConfiguration.QueryParameters.Select = new string[] 
+                { "start", "end", "subject", "location", "sensitivity", "showAs", "isAllDay" };
+                requestConfiguration.QueryParameters.StartDateTime = from;
+                requestConfiguration.QueryParameters.EndDateTime = to;
+            });
 
-        return calendarView;
+        return calendarView!.Value;
     }
 
     public async Task<MailboxSettings?> GetUserMailboxSettings(string email)
@@ -72,12 +65,11 @@ public class MicrosoftGraphApplicationClient
         if (string.IsNullOrEmpty(id))
             return null;
 
-        var user = await graphServiceClient.Users[id]
-            .Request()
-            .Select("MailboxSettings")
+        var userMailboxSettings = await graphServiceClient.Users[id]
+            .MailboxSettings
             .GetAsync();
 
-        return user.MailboxSettings;
+        return userMailboxSettings;
     }
 
     private static async Task<string> GetUserIdAsync(string email, GraphServiceClient graphServiceClient)
@@ -86,16 +78,19 @@ public class MicrosoftGraphApplicationClient
         var filter = $"userPrincipalName eq '{email}'";
         //var filter = $"startswith(userPrincipalName,'{email}')";
 
-        var users = await graphServiceClient.Users
-            .Request()
-            .Filter(filter)
-            .GetAsync();
+        var users = await graphServiceClient.Users.GetAsync((requestConfiguration) =>
+        {
+            requestConfiguration.QueryParameters.Filter = filter;
+        });
 
-        if (users.CurrentPage.Count == 0)
+        var userId = users!.Value!.FirstOrDefault()!.Id;
+
+        if (string.IsNullOrEmpty(userId))
         {
             return string.Empty;
         }
-        return users.CurrentPage[0].Id;
+
+        return userId;
     }
 
     private GraphServiceClient GetGraphClient()

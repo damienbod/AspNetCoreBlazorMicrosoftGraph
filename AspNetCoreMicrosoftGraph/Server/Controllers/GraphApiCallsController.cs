@@ -130,7 +130,7 @@ public class GraphApiCallsController : ControllerBase
         var teamsMeetingCreated = new TeamsMeetingCreated
         {
             Subject = createdMeeting.Subject,
-            JoinUrl = createdMeeting.JoinUrl,
+            JoinWebUrl = createdMeeting.JoinWebUrl,
             Attendees = createdMeeting.Participants.Attendees.Select(c => c.Upn).ToList()
         };
 
@@ -139,7 +139,7 @@ public class GraphApiCallsController : ControllerBase
         {
             var recipient = attendee.Upn.Trim();
             var message = _emailService.CreateStandardEmail(recipient,
-                createdMeeting.Subject, createdMeeting.JoinUrl);
+                createdMeeting.Subject, createdMeeting.JoinWebUrl);
 
             await _microsoftGraphDelegatedClient.SendEmailAsync(message);
         }
