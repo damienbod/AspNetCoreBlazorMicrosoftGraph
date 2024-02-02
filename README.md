@@ -10,6 +10,7 @@
 
 ## History
 
+- 2024-01-14 Updated packages, fix refresh bug
 - 2024-01-14 Updated packages, improved CSP, now using a nonce
 - 2023-11-22 Updated Graph 5 SDK
 - 2023-11-21 Updated .NET 8
