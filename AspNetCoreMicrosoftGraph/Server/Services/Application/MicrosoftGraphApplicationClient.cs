@@ -48,7 +48,7 @@ public class MicrosoftGraphApplicationClient
         var calendarView = await graphServiceClient.Users[id].CalendarView
             .GetAsync(requestConfiguration =>
             {
-                requestConfiguration.QueryParameters.Select = new string[] 
+                requestConfiguration.QueryParameters.Select = new string[]
                 { "start", "end", "subject", "location", "sensitivity", "showAs", "isAllDay" };
                 requestConfiguration.QueryParameters.StartDateTime = from;
                 requestConfiguration.QueryParameters.EndDateTime = to;

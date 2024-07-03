@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AspNetCoreMicrosoftGraph.Shared.Authorization;
+﻿namespace AspNetCoreMicrosoftGraph.Shared.Authorization;
 
 public class UserInfo
 {

@@ -46,7 +46,7 @@ public class GraphApiCallsController : ControllerBase
         {
             var mailbox = await _microsoftGraphApplicationClient.GetUserMailboxSettings(email);
 
-            if(mailbox == null)
+            if (mailbox == null)
             {
                 return NotFound($"mailbox settings for {email} not found");
             }
@@ -96,7 +96,7 @@ public class GraphApiCallsController : ControllerBase
     public async Task<IEnumerable<FilteredEventDto>> UserCalendar(UserCalendarDataModel userCalendarDataModel)
     {
         var userCalendar = await _microsoftGraphApplicationClient.GetCalanderForUser(
-            userCalendarDataModel.Email, 
+            userCalendarDataModel.Email,
             userCalendarDataModel.From!.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"),
             userCalendarDataModel.To!.Value.ToString("yyyy-MM-ddTHH:mm:ss.sssZ"));
 
@@ -107,7 +107,7 @@ public class GraphApiCallsController : ControllerBase
             Start = l.Start?.DateTime,
             End = l.End?.DateTime,
             ShowAs = l.ShowAs!.Value.ToString(),
-            Subject=l.Subject
+            Subject = l.Subject
         });
     }
 
@@ -148,5 +148,5 @@ public class GraphApiCallsController : ControllerBase
 
         return teamsMeetingCreated;
     }
-    
+
 }

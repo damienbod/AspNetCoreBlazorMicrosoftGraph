@@ -21,7 +21,7 @@ public class Startup
         services.AddScoped<TeamsService>();
 
         services.AddScoped<MicrosoftGraphApplicationClient>();
-   
+
         services.AddAntiforgery(options =>
         {
             options.HeaderName = "X-XSRF-TOKEN";
@@ -35,7 +35,7 @@ public class Startup
 
         var scopes = Configuration.GetValue<string>("DownstreamApi:Scopes");
         string[]? initialScopes = scopes?.Split(' ');
-        if(scopes == null) throw new ArgumentNullException(nameof(scopes));
+        if (scopes == null) throw new ArgumentNullException(nameof(scopes));
 
         services.AddMicrosoftIdentityWebAppAuthentication(Configuration)
             .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)

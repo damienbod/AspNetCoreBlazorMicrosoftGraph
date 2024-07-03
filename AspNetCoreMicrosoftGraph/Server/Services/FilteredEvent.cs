@@ -10,5 +10,5 @@ public class FilteredEvent
     public Location? Location { get; set; }
     public Sensitivity? Sensitivity { get; set; }
     public FreeBusyStatus? ShowAs { get; set; }
-    public bool? IsAllDay { get; set; }  
+    public bool? IsAllDay { get; set; }
 }

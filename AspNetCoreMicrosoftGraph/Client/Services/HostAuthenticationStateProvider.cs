@@ -93,7 +93,7 @@ public class HostAuthenticationStateProvider : AuthenticationStateProvider
         {
             foreach (var claim in user.Claims)
             {
-                if(claim.Type != null && claim.Value != null)
+                if (claim.Type != null && claim.Value != null)
                     identity.AddClaim(new Claim(claim.Type, claim.Value));
             }
         }

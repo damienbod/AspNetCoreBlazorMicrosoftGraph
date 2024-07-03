@@ -7,5 +7,5 @@ public class FilteredEventDto
     public string? Subject { get; set; }
     public string? Sensitivity { get; set; }
     public string? ShowAs { get; set; }
-    public bool IsAllDay { get; set; }  
+    public bool IsAllDay { get; set; }
 }

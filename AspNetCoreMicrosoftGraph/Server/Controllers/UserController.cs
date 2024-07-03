@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using AspNetCoreMicrosoftGraph.Shared.Authorization;
+﻿using AspNetCoreMicrosoftGraph.Shared.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AspNetCoreMicrosoftGraph.Server.Controllers;
 
