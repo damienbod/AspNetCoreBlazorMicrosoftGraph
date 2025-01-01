@@ -10,6 +10,7 @@
 
 ## History
 
+- 2025-01-01 .NET 9
 - 2024-07-03 Updated packages
 - 2024-01-14 Updated packages, fix refresh bug
 - 2024-01-14 Updated packages, improved CSP, now using a nonce
